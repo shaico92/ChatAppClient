@@ -1,0 +1,9 @@
+.output{
+    overflow-y: hidden;
+    flex-flow: row;
+    
+    background-color: white;
+    width: 80%;
+    margin-left: 138px;
+    height: 53rem;
+  }
