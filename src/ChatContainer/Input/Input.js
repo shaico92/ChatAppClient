@@ -1,29 +1,57 @@
-import React,{useState,useEffect} from 'react';
-import './Input.css';
-import {sendChatMessage} from '../../Helper/Helper'
-const Input_=() =>{
-    
-const [inputVal,setInputVal]= useState('');
+import React, { useState, useEffect } from "react";
+import "./Input.css";
 
-const sendMessage=()=>{
+import SocketIOClient from "socket.io-client";
+const ENDPOINT = "http://localhost:4000";
+const socket = SocketIOClient(ENDPOINT);
+
+const Input_ = () => {
+  const sendChatMessage = (content) => {
+    socket.emit("send-chat-message", content);
+  };
+
+  const [inputVal, setInputVal] = useState("");
+
+  const [output, setOutput] = useState([]);
+
+  const sendMessage = () => {
     sendChatMessage(inputVal);
-    setInputVal('')
-}
 
+    //setOutput([...output, msg]);
+    setOutput([...output, inputVal]);
+    //setOutput([...output, message]);
+    setInputVal("");
+  };
 
-useEffect(() => {
-    
-}, [inputVal]);
-return (
-    <div className="Input" >
+  useEffect(() => {
+    socket.on("chat-message", (message) => {
+      setOutput([...output, message]);
+    });
+    return () => socket.removeListener("chat-message");
+  });
 
-
-<input className="Input_line" value={inputVal}  onChange={(event)=>setInputVal(event.target.value)}  type="text" placeholder="Please enter message"></input>
-<div onClick={()=>sendMessage()} className="Send">Send</div>
+  useEffect(() => {}, [inputVal, output]);
+  return (
+    <div>
+      <div className="Output">
+        {output.map((od) => (
+          <p>{od}</p>
+        ))}
+      </div>
+      <div className="Input">
+        <input
+          className="Input_line"
+          value={inputVal}
+          onChange={(event) => setInputVal(event.target.value)}
+          type="text"
+          placeholder="Please enter message"
+        ></input>
+        <div onClick={() => sendMessage()} className="Send">
+          Send
+        </div>
+      </div>
     </div>
-    
-)
-
-}
+  );
+};
 
 export default Input_;
