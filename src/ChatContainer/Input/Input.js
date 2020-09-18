@@ -5,7 +5,7 @@ import SocketIOClient from "socket.io-client";
 const ENDPOINT = "http://localhost:4000";
 const socket = SocketIOClient(ENDPOINT);
 
-const Input_ = () => {
+const Input_ = ({ currentUser }) => {
   const sendChatMessage = (content) => {
     socket.emit("send-chat-message", content);
   };
@@ -25,18 +25,28 @@ const Input_ = () => {
 
   useEffect(() => {
     socket.on("chat-message", (message) => {
-      setOutput([...output, message]);
+      console.log(message);
+      setOutput([...output, message.message]);
     });
     return () => socket.removeListener("chat-message");
   });
-
+  useEffect(() => {
+    socket.on("user-connected", (name) => {
+      if (name === currentUser) {
+        setOutput([...output, `You have joined the chat!`]);
+      } else {
+        setOutput([...output, `${name} has joined the chat!`]);
+      }
+    });
+    return () => socket.removeListener("user-connected");
+  });
   useEffect(() => {}, [inputVal, output]);
   return (
     <div>
       <div className="Output">
-        {output.map((od) => (
-          <p>{od}</p>
-        ))}
+        {output.map((od) => {
+          return <p>{od}</p>;
+        })}
       </div>
       <div className="Input">
         <input

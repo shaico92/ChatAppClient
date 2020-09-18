@@ -1,11 +1,12 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import ChatContainer from './ChatContainer/ChatContainer'
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import Login from "./Authentication/Login";
+import ChatContainer from "./ChatContainer/ChatContainer";
 function App() {
   return (
     <div className="App">
-          <ChatContainer/>
+      <Login />
     </div>
   );
 }

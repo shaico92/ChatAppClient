@@ -2,7 +2,7 @@ import React from "react";
 
 import Input_ from "./Input/Input";
 import Output_ from "./Output/Output";
-const ChatContainer = () => {
+const ChatContainer = ({ currentUser }) => {
   return (
     <div
       style={{
@@ -12,7 +12,7 @@ const ChatContainer = () => {
         flexDirection: "column",
       }}
     >
-      <Input_ />
+      <Input_ currentUser={currentUser} />
     </div>
   );
 };
