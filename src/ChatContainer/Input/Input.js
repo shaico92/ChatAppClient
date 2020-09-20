@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Input.css";
 
-import SocketIOClient from "socket.io-client";
-const ENDPOINT = "http://localhost:4000";
-const socket = SocketIOClient(ENDPOINT);
+import socket from "../../api/api";
 
 const Input_ = ({ currentUser }) => {
   const sendChatMessage = (content) => {
@@ -16,25 +14,24 @@ const Input_ = ({ currentUser }) => {
 
   const sendMessage = () => {
     sendChatMessage(inputVal);
+    const content = { name: "You", message: inputVal };
+    console.log(content);
 
-    //setOutput([...output, msg]);
-    setOutput([...output, inputVal]);
-    //setOutput([...output, message]);
+    setOutput([...output, content]);
+
     setInputVal("");
   };
 
   useEffect(() => {
     socket.on("chat-message", (message) => {
-      console.log(message);
-      setOutput([...output, message.message]);
+      setOutput([...output, message]);
     });
     return () => socket.removeListener("chat-message");
   });
   useEffect(() => {
     socket.on("user-connected", (name) => {
-      if (name === currentUser) {
-        setOutput([...output, `You have joined the chat!`]);
-      } else {
+      setOutput([...output, `You have joined the chat!`]);
+      if (name !== currentUser) {
         setOutput([...output, `${name} has joined the chat!`]);
       }
     });
@@ -45,7 +42,15 @@ const Input_ = ({ currentUser }) => {
     <div>
       <div className="Output">
         {output.map((od) => {
-          return <p>{od}</p>;
+          if (!od.color && !od.name && !od.message) {
+            return <p>{od}</p>;
+          } else {
+            return (
+              <p style={{ backgroundColor: `#${od.color}` }}>
+                {od.name} : {od.message}
+              </p>
+            );
+          }
         })}
       </div>
       <div className="Input">
