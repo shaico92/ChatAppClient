@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from "react";
 import "./Input.css";
-
+import RecordButton from "./VoiceInput";
 import socket from "../../api/api";
 
 const Input_ = ({ currentUser }) => {
   const sendChatMessage = (content) => {
     socket.emit("send-chat-message", content);
   };
+  const sendAudio = (e) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      const url = URL.createObjectURL(file);
+      //const url = URL.createObjectURL(file);
 
+      setOutput([...output, { name: "You", message: url }]);
+      sendChatMessage(url);
+    }
+  };
   const [inputVal, setInputVal] = useState("");
 
   const [output, setOutput] = useState([]);
@@ -15,7 +24,6 @@ const Input_ = ({ currentUser }) => {
   const sendMessage = () => {
     sendChatMessage(inputVal);
     const content = { name: "You", message: inputVal };
-    console.log(content);
 
     setOutput([...output, content]);
 
@@ -38,12 +46,32 @@ const Input_ = ({ currentUser }) => {
     return () => socket.removeListener("user-connected");
   });
   useEffect(() => {}, [inputVal, output]);
+
+  const setup = () => {
+    // const mic = new p5.AudioIn();
+    // mic.start();
+  };
   return (
     <div>
       <div className="Output">
         {output.map((od) => {
+          console.log(od.name);
           if (!od.color && !od.name && !od.message) {
             return <p>{od}</p>;
+          } else if (od.voice) {
+            return (
+              <div>
+                <p style={{ backgroundColor: `#${od.color}` }}>{od.name}</p>
+                <audio src={od.voice} controls></audio>;
+              </div>
+            );
+          } else if (od.message.includes("blob:http://localhost")) {
+            return (
+              <div>
+                <p style={{ backgroundColor: `#${od.color}` }}>{od.name}</p>
+                <audio src={od.message} controls></audio>;
+              </div>
+            );
           } else {
             return (
               <p style={{ backgroundColor: `#${od.color}` }}>
@@ -64,6 +92,12 @@ const Input_ = ({ currentUser }) => {
         <div onClick={() => sendMessage()} className="Send">
           Send
         </div>
+        <input
+          type="file"
+          onChange={(event) => sendAudio(event)}
+          accept="audio/*"
+          capture
+        ></input>
       </div>
     </div>
   );

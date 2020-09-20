@@ -1,12 +1,13 @@
-.Input{
-display: inline-flex;
+.Input {
+  display: inline-flex;
 }
 
-.Input_line{
-        width: 83%;
+.Input_line {
+  width: 83%;
 }
-.Send{
-    width: 17%;
-    cursor : pointer;
-    border: black solid 2px;
+.Send {
+  margin-left: 5px;
+  width: fit-content;
+  cursor: pointer;
+  border: black solid 2px;
 }
