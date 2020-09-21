@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./Input.css";
-import RecordButton from "./VoiceInput";
+import useRecorder from "./VoiceInput";
 import socket from "../../api/api";
 
 const Input_ = ({ currentUser }) => {
   const sendChatMessage = (content) => {
     socket.emit("send-chat-message", content);
   };
+
+  let [audioURL, isRecording, startRecording, stopRecording] = useRecorder();
   const sendAudio = (e) => {
     if (e.target.files) {
       const file = e.target.files[0];
@@ -17,6 +19,15 @@ const Input_ = ({ currentUser }) => {
       sendChatMessage(url);
     }
   };
+  const sendAudio1 = (e) => {
+    setOutput([...output, { name: "You", message: e }]);
+    sendChatMessage(e);
+    //const url = URL.createObjectURL(file);
+
+    // setOutput([...output, { name: "You", message: url }]);
+    // sendChatMessage(url);
+  };
+
   const [inputVal, setInputVal] = useState("");
 
   const [output, setOutput] = useState([]);
@@ -47,6 +58,9 @@ const Input_ = ({ currentUser }) => {
   });
   useEffect(() => {}, [inputVal, output]);
 
+  useEffect(() => {
+    sendAudio1(audioURL);
+  }, [audioURL]);
   const setup = () => {
     // const mic = new p5.AudioIn();
     // mic.start();
@@ -55,7 +69,6 @@ const Input_ = ({ currentUser }) => {
     <div>
       <div className="Output">
         {output.map((od) => {
-          console.log(od.name);
           if (!od.color && !od.name && !od.message) {
             return <p>{od}</p>;
           } else if (od.voice) {
@@ -98,6 +111,9 @@ const Input_ = ({ currentUser }) => {
           accept="audio/*"
           capture
         ></input>
+        <button onClick={!isRecording ? startRecording : stopRecording}>
+          {!isRecording ? "Record" : "Stop Record"}
+        </button>
       </div>
     </div>
   );
