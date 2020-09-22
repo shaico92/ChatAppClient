@@ -35,15 +35,19 @@ const Input_ = ({ currentUser }) => {
   const sendMessage = () => {
     sendChatMessage(inputVal);
     const content = { name: "You", message: inputVal };
+    if (content.message !== "") {
+      setOutput([...output, content]);
 
-    setOutput([...output, content]);
-
-    setInputVal("");
+      setInputVal("");
+    }
   };
 
   useEffect(() => {
     socket.on("chat-message", (message) => {
-      setOutput([...output, message]);
+      console.log(message);
+      if (message.message !== "") {
+        setOutput([...output, message]);
+      }
     });
     return () => socket.removeListener("chat-message");
   });
@@ -56,7 +60,7 @@ const Input_ = ({ currentUser }) => {
     });
     return () => socket.removeListener("user-connected");
   });
-  useEffect(() => {}, [inputVal, output]);
+  useEffect(() => {});
 
   useEffect(() => {
     sendAudio1(audioURL);
@@ -65,11 +69,14 @@ const Input_ = ({ currentUser }) => {
     // const mic = new p5.AudioIn();
     // mic.start();
   };
+
   return (
     <div>
       <div className="Output">
+        <p>You have joined the Chat!</p>
         {output.map((od) => {
           if (!od.color && !od.name && !od.message) {
+            console.log(od);
             return <p>{od}</p>;
           } else if (od.voice) {
             return (
@@ -85,7 +92,8 @@ const Input_ = ({ currentUser }) => {
                 <audio src={od.message} controls></audio>;
               </div>
             );
-          } else {
+          } else if (od.name !== null && od.message !== "") {
+            console.log(od);
             return (
               <p style={{ backgroundColor: `#${od.color}` }}>
                 {od.name} : {od.message}
@@ -102,9 +110,16 @@ const Input_ = ({ currentUser }) => {
           type="text"
           placeholder="Please enter message"
         ></input>
-        <div onClick={() => sendMessage()} className="Send">
-          Send
-        </div>
+        {inputVal !== "" ? (
+          <div onClick={() => sendMessage()} className="Send">
+            Send
+          </div>
+        ) : (
+          <div onClick={() => sendMessage()} className="Send" disabled>
+            Send
+          </div>
+        )}
+
         <input
           type="file"
           onChange={(event) => sendAudio(event)}
