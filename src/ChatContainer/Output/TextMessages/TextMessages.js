@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-
-import { msgShown } from "../../../Helper/Helper";
+import React from "react";
 
 const TextMessages = (props) => {
   return <input onChange={(lol) => props.addToArrayHandler(lol)}></input>;

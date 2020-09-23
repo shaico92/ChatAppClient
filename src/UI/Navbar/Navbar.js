@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import NavItems from "../../Constants/Constants";
 import NavigationItem from "./NavigationItem/NavigationItem";
 import "./Navbar.css";

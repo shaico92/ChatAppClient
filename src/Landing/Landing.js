@@ -5,37 +5,42 @@ import { Switch, Route } from "react-router-dom";
 import Login from "../Authentication/Login";
 import Signup from "../Authentication/Signup";
 import Home from "../Landing/Home/Home";
+import axios from "../api/axios";
 const Landing = () => {
-  const [pageIndex, setPageIndex] = useState("home");
+  const [pageIndex, setPageIndex] = useState(null);
+
+  const getSmth = () => {
+    axios.get("/", () => {
+      console.log("sending req to server");
+    });
+  };
 
   useEffect(() => {
     console.log(pageIndex);
   }, [pageIndex]);
-  switch (pageIndex) {
-    case "home":
-      return (
-        <div className={"landing"}>
-          <Header changeIndex={(label) => setPageIndex(label)} />
-          <Home />
-        </div>
-      );
-    case "sign up":
-      return (
-        <div className={"landing"}>
-          <Header changeIndex={(label) => setPageIndex(label)} />
-          <Signup />
-        </div>
-      );
-    case "login":
-      return (
-        <div className={"landing"}>
-          <Header changeIndex={(label) => setPageIndex(label)} />
-          <Login />
-        </div>
-      );
-    default:
-      return <h1>nothing here</h1>;
-  }
+
+  useEffect(() => {
+    getSmth();
+  });
+  const renderSwitch = (param) => {
+    switch (param) {
+      case "home":
+        return <Home />;
+      case "sign up":
+        return <Signup />;
+      case "login":
+        return <Login />;
+      default:
+        return <Home />;
+    }
+  };
+
+  return (
+    <div className={"landing"}>
+      <Header changeIndex={(label) => setPageIndex(label)} />
+      {renderSwitch(pageIndex)}
+    </div>
+  );
 };
 
 export default Landing;
