@@ -5,28 +5,27 @@ const Signup = ({}) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [submit, setSubmit] = useState(false);
-  const [serverResult, setServerRsult] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
-  const formValidation = async (name, password, email) => {
+  const formValidation = (name, password, email) => {
     let validationSuccess = true;
 
     if (name === "") {
-      setServerRsult("Please type your name");
+      setErrorMsg("Please type your name");
       validationSuccess = false;
     } else if (!email.includes("@") || email.length === 0) {
-      setServerRsult("Please type a valid email");
+      setErrorMsg("Please type a valid email");
       validationSuccess = false;
     } else if (password.length < 10 || password.length === 0) {
-      setServerRsult("Password must be at least 10 characters");
+      setErrorMsg("Password must be at least 10 characters");
       validationSuccess = false;
-    } else {
-      validationSuccess = true;
     }
 
     return validationSuccess;
   };
   const createUser = (name, password, email) => {
-    if (formValidation(name, password, email) !== false) {
+    const isValid = formValidation(name, password, email);
+    if (isValid) {
       if (
         password !== null &&
         name !== null &&
@@ -40,7 +39,7 @@ const Signup = ({}) => {
         axios
           .post("/register", userCred)
           .then((res) => {
-            setServerRsult(res.data);
+            setErrorMsg(res.data);
           })
           .catch((err) => {
             console.log(err);
@@ -54,11 +53,11 @@ const Signup = ({}) => {
     setName("");
     setEmail("");
   }, [submit]);
-  useEffect(() => {}, [serverResult]);
+  useEffect(() => {}, [errorMsg]);
   return (
     <div style={{ marginTop: "30%" }}>
       <div>
-        <div style={{ color: "red" }}>{serverResult}</div>
+        <div style={{ color: "red" }}>{errorMsg}</div>
         <div>
           <input
             value={name}

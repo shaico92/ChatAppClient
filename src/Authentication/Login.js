@@ -3,20 +3,36 @@ import React, { useEffect, useState } from "react";
 import ChatContainer from "../ChatContainer/ChatContainer";
 import socket from "../api/api";
 import axios from "../api/axios";
+import Home from "../Landing/Home/Home";
 const Login = ({}) => {
-  const [username, setUsername] = useState("");
+  const [userEmail, setuserEmail] = useState("");
+  const [userName, setuserName] = useState(null);
   const [userpass, setUserpass] = useState("");
   const [submit, setSubmit] = useState(false);
+  const [userAuthPassed, setUserAuthPassed] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
 
-  const authenticate = (name, password) => {
-    if (password !== null && name !== null && password !== "" && name !== "") {
-      const userCred = { name: name, password: password };
-
+  const authenticate = (email, password) => {
+    if (
+      password !== null &&
+      email !== null &&
+      password !== "" &&
+      email !== ""
+    ) {
+      const userCred = { email: email, password: password };
+      setSubmit(true);
       axios
         .post("/login", userCred)
-        .then((res) => {
-          setSubmit(true);
-          console.log(res);
+        .then(async (res) => {
+          console.log(res.data);
+          if (res.data.answer !== true) {
+            setErrorMsg(res.data);
+          } else {
+            console.log(res.data);
+            const result = res.data.answer;
+            await setUserAuthPassed(result);
+            await setuserName(res.data.name);
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -24,31 +40,34 @@ const Login = ({}) => {
     }
   };
   useEffect(() => {
-    setUserpass("");
-    setUsername("");
+    // setUserpass("");
+    // setuserEmail("");
   }, [submit]);
   //method to send event on chat socket
-  const loginUser = (name) => {
-    socket.emit("new-user", name);
 
-    socket.removeListener("new-user");
-    setSubmit(true);
-  };
+  // case true:
+  //   return <ChatContainer currentUser={username} />;
+  switch (userAuthPassed) {
+    case true:
+      return (
+        <Home loggedUserName={userName} isloggedUser={userAuthPassed} />
+        // <div>
+        //   <h1>Welcome {userEmail} you can now start your own chat</h1>
+        //   <button>Create Your own Chat Room</button>
+        // </div>
+      );
 
-  switch (submit) {
-    // case true:
-    //   return <ChatContainer currentUser={username} />;
-
-    case false:
+    default:
       return (
         <div style={{ marginTop: "30%" }}>
           <div>
+            <div style={{ color: "red" }}>{errorMsg}</div>
             <div>
               <input
-                value={username}
+                value={userEmail}
                 type="text"
-                onChange={(event) => setUsername(event.target.value)}
-                placeholder={"Please Enter your name"}
+                onChange={(event) => setuserEmail(event.target.value)}
+                placeholder={"Please Enter your email"}
               ></input>
             </div>
             <div>
@@ -60,15 +79,14 @@ const Login = ({}) => {
               ></input>
             </div>
             <div>
-              <button onClick={() => authenticate(username, userpass)}>
+              <button onClick={() => authenticate(userEmail, userpass)}>
                 Login
               </button>
             </div>
           </div>
         </div>
       );
-    default:
-      return <h1>logged user is null</h1>;
+      break;
   }
 };
 
