@@ -6,7 +6,8 @@ import Login from "../Authentication/Login";
 import Signup from "../Authentication/Signup";
 import Home from "../Landing/Home/Home";
 import axios from "../api/axios";
-const Landing = () => {
+import SideBar from "../SideBar/Sidebar";
+const Landing = ({ isUserLogged }) => {
   const [pageIndex, setPageIndex] = useState(null);
 
   const getSmth = () => {
@@ -38,6 +39,7 @@ const Landing = () => {
   return (
     <div className={"landing"}>
       <Header changeIndex={(label) => setPageIndex(label)} />
+
       {renderSwitch(pageIndex)}
     </div>
   );

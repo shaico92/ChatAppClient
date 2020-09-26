@@ -4,7 +4,7 @@ import NavBar from "../../UI/Navbar/Navbar";
 
 import Login from "../../Authentication/Login";
 import ChatContainer from "../../ChatContainer/ChatContainer";
-const Header = ({ changeIndex }) => {
+const Header = ({ changeIndex, isUserLogged }) => {
   return (
     <div className={"Header"}>
       <NavBar setCurrentComponent={(label) => changeIndex(label)} />
