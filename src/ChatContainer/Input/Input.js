@@ -54,8 +54,8 @@ const Input_ = ({ currentUser }) => {
   useEffect(() => {
     socket.on("user-connected", (name) => {
       setOutput([...output, `You have joined the chat!`]);
-      if (name !== currentUser) {
-        setOutput([...output, `${name} has joined the chat!`]);
+      if (name.name !== currentUser) {
+        setOutput([...output, `${name.name} has joined the chat!`]);
       }
     });
     return () => socket.removeListener("user-connected");
@@ -76,7 +76,6 @@ const Input_ = ({ currentUser }) => {
         <p>You have joined the Chat!</p>
         {output.map((od) => {
           if (!od.color && !od.name && !od.message) {
-            console.log(od);
             return <p>{od}</p>;
           } else if (od.voice) {
             return (
@@ -93,7 +92,6 @@ const Input_ = ({ currentUser }) => {
               </div>
             );
           } else if (od.name !== null && od.message !== "") {
-            console.log(od);
             return (
               <p style={{ backgroundColor: `#${od.color}` }}>
                 {od.name} : {od.message}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import socket from "../../api/api";
 import ChatCreatorForm from "../../Chat/ChatCreatorForm/ChatCreatorForm";
+import ChatRooms from "../../Chat/ChatRooms/ChatRooms";
 import ChatContainer from "../../ChatContainer/ChatContainer";
 import { NavLink } from "react-router-dom";
 
@@ -9,20 +10,32 @@ const Home = ({ isloggedUser, loggedUserName }) => {
   const [openRoomCreateForm, setCreateRoom] = useState(false);
   const [roomCreated, setRoomCreated] = useState(false);
   const [roomsAvailable, setRoomsAvailable] = useState([]);
+  const [connectToRoom, setConnectToRoom] = useState(false);
+  const [roomToConnect, setRoomToConnect] = useState(null);
+  const connectToRoomHandler = async (room, name) => {
+    console.log(name);
+    const data = { room: room, name: name };
+    await socket.emit("new-user", data);
 
-  // const createRoomHandler = (name) => {
-  //   console.log(name);
-  //   socket.emit("new-user", name);
+    //socket.removeListener("new-user");
+    setConnectToRoom(true);
+  };
 
-  //   socket.removeListener("new-user");
-  //   setRoomCreated(true);
-  // };
-
+  useEffect(() => {
+    renderChatsHandler();
+  });
   const createRoomHandler = (chatName) => {
     setRoomCreated(true);
     setCreateRoom(false);
     console.log(chatName);
-    const roomDefinition = { roomName: chatName, roomAdmin: loggedUserName };
+
+    let biggestID = [];
+
+    const roomDefinition = {
+      roomId: Math.max(...biggestID) + 1,
+      roomName: chatName,
+      roomAdmin: loggedUserName,
+    };
 
     axios
       .post("/chats/createRoom", roomDefinition)
@@ -43,17 +56,22 @@ const Home = ({ isloggedUser, loggedUserName }) => {
         console.log(err);
       });
   };
-  const showChat = () => {
-    // switch (param) {
-    //   case true:
-    //     return (
-    //       <div>
-    //         <h1>room created</h1>
-    //         <ChatContainer currentUser={loggedUserName} />
-    //       </div>
-    //     );
+  const getChat = (roomNum) => {
+    console.log(roomNum);
+    axios
+      .get(`/chats/${roomNum}`)
+      .then(async (res) => {
+        if (res.data === true) {
+          setRoomToConnect(roomNum);
+          connectToRoomHandler(roomNum, loggedUserName);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-    //   default:
+  const showChat = () => {
     return (
       <div style={{ flexDirection: "column" }}>
         <div>
@@ -79,13 +97,11 @@ const Home = ({ isloggedUser, loggedUserName }) => {
           <NavLink to="/chats" onClick={() => renderChatsHandler()}>
             Chats
           </NavLink>
-          {roomsAvailable.map((room, index) => {
-            return (
-              <a href={`/chats/:${room.roomName}-${index}`}>
-                {room.roomName}-{room.roomAdmin}
-              </a>
-            );
-          })}
+          <ChatRooms
+            isConnecting={connectToRoom}
+            rooms={roomsAvailable}
+            roomToConnect={(roomNum) => getChat(roomNum)}
+          />
         </ul>
       </div>
     );
@@ -96,7 +112,11 @@ const Home = ({ isloggedUser, loggedUserName }) => {
 
   switch (isloggedUser) {
     case true:
-      return <div>{showChat()}</div>;
+      return connectToRoom === false && roomToConnect === null ? (
+        <div>{showChat()}</div>
+      ) : (
+        <ChatContainer room={roomToConnect} currentUser={loggedUserName} />
+      );
     default:
       return (
         <div>
