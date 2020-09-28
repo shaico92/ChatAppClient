@@ -11,6 +11,7 @@ const Input_ = ({ currentUser }) => {
   };
 const inputRef = useRef()
 const [finishedMessage,setFinishedMessage]= useState(false)
+const [photo,setPhoto] = useState(null)
   let [audioURL, isRecording, startRecording, stopRecording] = useRecorder();
   const sendAudio = (e) => {
     if (e.target.files) {
