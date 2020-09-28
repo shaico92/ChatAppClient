@@ -2,15 +2,11 @@ import React from "react";
 
 import Input_ from "./Input/Input";
 import Output_ from "./Output/Output";
+import './ChatContainer.css'
 const ChatContainer = ({ room, currentUser }) => {
   return (
-    <div
-      style={{
-        marginLeft: "32%",
-        width: "40%",
-        display: "flex",
-        flexDirection: "column",
-      }}
+    <div className="ChatContainer"
+      
     >
       <Input_ roomTo={room} currentUser={currentUser} />
     </div>

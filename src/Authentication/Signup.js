@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "../api/axios";
+import './Signup.css'
 const Signup = ({}) => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [submit, setSubmit] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
-
-  const formValidation = (name, password, email) => {
+  const [image,setImage] = useState('')
+  const formValidation = (image,name, password, email) => {
     let validationSuccess = true;
 
     if (name === "") {
@@ -23,8 +24,16 @@ const Signup = ({}) => {
 
     return validationSuccess;
   };
-  const createUser = (name, password, email) => {
-    const isValid = formValidation(name, password, email);
+  const addPicture = (e) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      const url = URL.createObjectURL(file);
+      //const url = URL.createObjectURL(file);
+      setImage(file)
+    }
+  };
+  const createUser = (image,name, password, email) => {
+    const isValid = formValidation(image,name, password, email);
     if (isValid) {
       if (
         password !== null &&
@@ -34,7 +43,7 @@ const Signup = ({}) => {
         email !== null &&
         email !== ""
       ) {
-        const userCred = { name: name, password: password, email: email };
+        const userCred = {image:image, name: name, password: password, email: email };
         setSubmit(true);
         axios
           .post("/register", userCred)
@@ -48,12 +57,8 @@ const Signup = ({}) => {
     }
   };
 
-  useEffect(() => {
-    setPassword("");
-    setName("");
-    setEmail("");
-  }, [submit]);
-  useEffect(() => {}, [errorMsg]);
+  
+  
   return (
     <div style={{ marginTop: "30%" }}>
       <div>
@@ -81,9 +86,20 @@ const Signup = ({}) => {
             onChange={(event) => setPassword(event.target.value)}
             placeholder={"Please Enter Password"}
           ></input>
+          
+        </div>
+        <div className={"image"}>
+        <label for="files" class="btn">Select Image</label>
+        <input
+          id="files"
+          type="file"
+          onChange={(event) => addPicture(event)}
+          accept="image/*"
+          
+        ></input>
         </div>
         <div>
-          <button onClick={() => createUser(name, password, email)}>
+          <button onClick={() => createUser(image,name, password, email)}>
             Signup
           </button>
         </div>

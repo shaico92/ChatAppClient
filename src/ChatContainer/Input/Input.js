@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import "./Input.css";
 import useRecorder from "./VoiceInput";
 import socket from "../../api/api";
-
+import './messages.css'
+import Photo from './tempPhoto.jpg'
 const Input_ = ({ currentUser }) => {
+
   const sendChatMessage = (content) => {
     socket.emit("send-chat-message", content);
   };
-
+const inputRef = useRef()
+const [finishedMessage,setFinishedMessage]= useState(false)
   let [audioURL, isRecording, startRecording, stopRecording] = useRecorder();
   const sendAudio = (e) => {
     if (e.target.files) {
@@ -17,8 +20,16 @@ const Input_ = ({ currentUser }) => {
 
       setOutput([...output, { name: "You", message: url }]);
       sendChatMessage(url);
+      setFinishedMessage(true)
     }
   };
+
+const sendMessageViaKeyBoard=e=>{
+  if (e.key==="Enter") {
+    
+    sendMessage();
+  }
+}
   const sendAudio1 = (e) => {
     setOutput([...output, { name: "You", message: e }]);
     sendChatMessage(e);
@@ -26,6 +37,7 @@ const Input_ = ({ currentUser }) => {
 
     // setOutput([...output, { name: "You", message: url }]);
     // sendChatMessage(url);
+    setFinishedMessage(true)
   };
 
   const [inputVal, setInputVal] = useState("");
@@ -39,6 +51,7 @@ const Input_ = ({ currentUser }) => {
       setOutput([...output, content]);
 
       setInputVal("");
+      setFinishedMessage(true)
     }
   };
 
@@ -53,14 +66,13 @@ const Input_ = ({ currentUser }) => {
   });
   useEffect(() => {
     socket.on("user-connected", (name) => {
-      setOutput([...output, `You have joined the chat!`]);
-      if (name.name !== currentUser) {
-        setOutput([...output, `${name.name} has joined the chat!`]);
-      }
+      setOutput([...output, `${name.name} has joined the chat!`]);
     });
     return () => socket.removeListener("user-connected");
   });
-  useEffect(() => {});
+  useEffect(() => {
+    
+    inputRef.current.focus()});
 
   useEffect(() => {
     sendAudio1(audioURL);
@@ -76,32 +88,53 @@ const Input_ = ({ currentUser }) => {
         <p>You have joined the Chat!</p>
         {output.map((od) => {
           if (!od.color && !od.name && !od.message) {
-            return <p>{od}</p>;
+            //case user joined the chat
+            return <p >{od}</p>;
+            //displays your audio tag when you send a recording 
           } else if (od.voice) {
             return (
-              <div>
-                <p style={{ backgroundColor: `#${od.color}` }}>{od.name}</p>
+              <div className="Message">
+                <img src={Photo} className="chat-photo"></img>
+                <p  style={{ backgroundColor: `#${od.color}` }}>{od.name}</p>
                 <audio src={od.voice} controls></audio>;
               </div>
             );
           } else if (od.message.includes("blob:http://localhost")) {
+            //displays your audio tag when another user sent a recording
             return (
-              <div>
-                <p style={{ backgroundColor: `#${od.color}` }}>{od.name}</p>
+              <div className="Message">
+                <img src={Photo} className="chat-photo"></img>
+                <p  style={{ backgroundColor: `#${od.color}` }}>{od.name}</p>
                 <audio src={od.message} controls></audio>;
               </div>
             );
-          } else if (od.name !== null && od.message !== "") {
+          } else if (od.name !== null&&od.name === "You" && od.message !== "") {
+            console.log(od);
             return (
-              <p style={{ backgroundColor: `#${od.color}` }}>
+              <div className="Message" >
+
+              <img src={Photo} className="chat-photo"></img>
+              <p  style={{ backgroundColor: `#${od.color}` }}>
                 {od.name} : {od.message}
               </p>
+              </div>
+            );
+          }else if(od.name !== "You" && od.message !== ""){
+            return (
+              <div className="Message-notSelf" >
+
+              <img src={Photo} className="chat-photo"></img>
+              <p  style={{ backgroundColor: `#${od.color}` }}>
+                {od.name} : {od.message}
+              </p>
+              </div>
             );
           }
         })}
       </div>
       <div className="Input">
-        <input
+        <input ref={inputRef}
+        onKeyDown={(e)=>sendMessageViaKeyBoard(e)}
           className="Input_line"
           value={inputVal}
           onChange={(event) => setInputVal(event.target.value)}
@@ -109,13 +142,13 @@ const Input_ = ({ currentUser }) => {
           placeholder="Please enter message"
         ></input>
         {inputVal !== "" ? (
-          <div onClick={() => sendMessage()} className="Send">
+          <button  onClick={() => sendMessage()} className="Send">
             Send
-          </div>
+          </button>
         ) : (
-          <div onClick={() => sendMessage()} className="Send" disabled>
+          <button  onClick={() => sendMessage()} className="Send" disabled>
             Send
-          </div>
+          </button>
         )}
 
         <input

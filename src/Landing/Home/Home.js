@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import socket from "../../api/api";
 import ChatCreatorForm from "../../Chat/ChatCreatorForm/ChatCreatorForm";
 import ChatRooms from "../../Chat/ChatRooms/ChatRooms";
-import ChatContainer from "../../ChatContainer/ChatContainer";
+import Chat from '../../Chat/Chat'
 import { NavLink } from "react-router-dom";
 
 import axios from "../../api/axios";
@@ -22,8 +22,8 @@ const Home = ({ isloggedUser, loggedUserName }) => {
   };
 
   useEffect(() => {
-    renderChatsHandler();
-  });
+    renderChatsHandler()
+  },[]);
   const createRoomHandler = (chatName) => {
     setRoomCreated(true);
     setCreateRoom(false);
@@ -39,7 +39,7 @@ const Home = ({ isloggedUser, loggedUserName }) => {
 
     axios
       .post("/chats/createRoom", roomDefinition)
-      .then(async (res) => {})
+      .then( (res) => {})
       .catch((err) => {});
   };
 
@@ -48,9 +48,9 @@ const Home = ({ isloggedUser, loggedUserName }) => {
   const renderChatsHandler = () => {
     axios
       .get("/chats")
-      .then(async (res) => {
+      .then( async(res) => {
         const tempArray = res.data;
-        setRoomsAvailable(tempArray);
+      await  setRoomsAvailable(tempArray);
       })
       .catch((err) => {
         console.log(err);
@@ -94,9 +94,7 @@ const Home = ({ isloggedUser, loggedUserName }) => {
             display: "flex",
           }}
         >
-          <NavLink to="/chats" onClick={() => renderChatsHandler()}>
-            Chats
-          </NavLink>
+          
           <ChatRooms
             isConnecting={connectToRoom}
             rooms={roomsAvailable}
@@ -115,7 +113,7 @@ const Home = ({ isloggedUser, loggedUserName }) => {
       return connectToRoom === false && roomToConnect === null ? (
         <div>{showChat()}</div>
       ) : (
-        <ChatContainer room={roomToConnect} currentUser={loggedUserName} />
+        <Chat room={roomToConnect} currentUser={loggedUserName} />
       );
     default:
       return (

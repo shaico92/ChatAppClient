@@ -1,4 +1,14 @@
 .Output {
-  border: black solid 2px;
-  height: 37rem;
+  
+  width: 500px;
+  min-width: 390px;
+  height :600px;
+  background: #eee;
+  padding: 25px;
+  margin: 20px auto;
+  box-shadow: 3px 3px #ccc;
+  
+    display: flex;
+    flex-direction: column;
+    overflow: hidden scroll;
 }

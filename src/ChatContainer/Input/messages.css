@@ -1,0 +1,46 @@
+.Message{
+    align-items: center;
+    display: flex;
+    margin: 5px;
+    
+    
+}
+.Message-notSelf{
+    align-items: center;
+    display: flex;
+    margin: 5px;
+    flex-direction: row-reverse;
+    
+}
+
+.chat-photo{
+    width: 60px;
+    height: 60px;
+    background-color: #ccc;
+    border-radius: 50%;
+}
+
+.Message p{
+    width: 70%;
+    padding: 15px;
+    margin: 5px 10px 0;
+    background-color: #1ddced;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 18px;
+    text-align: left;
+    word-break: break-all;
+    
+}
+.Message-notSelf p{
+    width: 70%;
+    padding: 15px;
+    margin: 5px 10px 0;
+    background-color: #1ddced;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 18px;
+    text-align: left;
+    word-break: break-all;
+    
+}

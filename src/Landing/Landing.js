@@ -6,6 +6,7 @@ import Login from "../Authentication/Login";
 import Signup from "../Authentication/Signup";
 import Home from "../Landing/Home/Home";
 import axios from "../api/axios";
+import './Landing.css'
 import SideBar from "../SideBar/Sidebar";
 const Landing = ({ isUserLogged }) => {
   const [pageIndex, setPageIndex] = useState(null);
@@ -37,7 +38,7 @@ const Landing = ({ isUserLogged }) => {
   };
 
   return (
-    <div className={"landing"}>
+    <div className={"Landing"}>
       <Header changeIndex={(label) => setPageIndex(label)} />
 
       {renderSwitch(pageIndex)}
