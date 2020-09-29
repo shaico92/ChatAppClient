@@ -6,7 +6,7 @@ import Chat from '../../Chat/Chat'
 import { NavLink } from "react-router-dom";
 
 import axios from "../../api/axios";
-const Home = ({ isloggedUser, loggedUserName }) => {
+const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
   const [openRoomCreateForm, setCreateRoom] = useState(false);
   const [roomCreated, setRoomCreated] = useState(false);
   const [roomsAvailable, setRoomsAvailable] = useState([]);
@@ -23,6 +23,7 @@ const Home = ({ isloggedUser, loggedUserName }) => {
 
   useEffect(() => {
     renderChatsHandler()
+    console.log(` this is home ${loggedUserPhoto}`);
   },[]);
   const createRoomHandler = (chatName) => {
     setRoomCreated(true);
@@ -113,7 +114,7 @@ const Home = ({ isloggedUser, loggedUserName }) => {
       return connectToRoom === false && roomToConnect === null ? (
         <div>{showChat()}</div>
       ) : (
-        <Chat room={roomToConnect} currentUser={loggedUserName} />
+        <Chat loggedUserPhotoChat={loggedUserPhoto} room={roomToConnect} currentUser={loggedUserName} />
       );
     default:
       return (

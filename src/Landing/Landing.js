@@ -10,7 +10,7 @@ import './Landing.css'
 import SideBar from "../SideBar/Sidebar";
 const Landing = ({ isUserLogged }) => {
   const [pageIndex, setPageIndex] = useState(null);
-
+  
   const getSmth = () => {
     axios.get("/", () => {
       console.log("sending req to server");

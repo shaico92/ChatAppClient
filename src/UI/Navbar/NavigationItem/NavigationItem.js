@@ -9,6 +9,7 @@ const NavigationItem = ({ ref1, key, classS, label, click }) => {
       exact
       className={` link ${classS}`}
       onClick={() => click()}
+      
       to={ref1}
       key={key}
     >

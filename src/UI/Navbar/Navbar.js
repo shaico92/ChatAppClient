@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import NavItems from "../../Constants/Constants";
+import {Nav} from "../../Constants/Constants";
 import NavigationItem from "./NavigationItem/NavigationItem";
 import "./Navbar.css";
 const NavBar = ({ setCurrentComponent, userLogged }) => {
   const setNavMenu = (param) => {
-    const nav = NavItems.map((item) => (
+    const nav = Nav.filter(item=>!item.hidden).map((item) => (
       <NavigationItem
         click={() => setCurrentComponent(item.label)}
         ref1={item.ref}

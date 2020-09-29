@@ -3,15 +3,17 @@ import "./Input.css";
 import useRecorder from "./VoiceInput";
 import socket from "../../api/api";
 import './messages.css'
+import axios from '../../api/axios'
 import Photo from './tempPhoto.jpg'
-const Input_ = ({ currentUser }) => {
-
+const APIURL=axios.defaults.baseURL;
+const Input_ = ({ currentUser, userPhoto }) => {
+  
   const sendChatMessage = (content) => {
     socket.emit("send-chat-message", content);
   };
 const inputRef = useRef()
 const [finishedMessage,setFinishedMessage]= useState(false)
-const [photo,setPhoto] = useState(null)
+
   let [audioURL, isRecording, startRecording, stopRecording] = useRecorder();
   const sendAudio = (e) => {
     if (e.target.files) {
@@ -78,10 +80,7 @@ const sendMessageViaKeyBoard=e=>{
   useEffect(() => {
     sendAudio1(audioURL);
   }, [audioURL]);
-  const setup = () => {
-    // const mic = new p5.AudioIn();
-    // mic.start();
-  };
+  
 
   return (
     <div>
@@ -95,7 +94,7 @@ const sendMessageViaKeyBoard=e=>{
           } else if (od.voice) {
             return (
               <div className="Message">
-                <img src={Photo} className="chat-photo"></img>
+                <img src={`${APIURL}/public/uploads/${userPhoto}`} className="chat-photo"></img>
                 <p  style={{ backgroundColor: `#${od.color}` }}>{od.name}</p>
                 <audio src={od.voice} controls></audio>;
               </div>
@@ -104,7 +103,7 @@ const sendMessageViaKeyBoard=e=>{
             //displays your audio tag when another user sent a recording
             return (
               <div className="Message">
-                <img src={Photo} className="chat-photo"></img>
+                <img src={`${APIURL}/public/uploads/${userPhoto}`} className="chat-photo"></img>
                 <p  style={{ backgroundColor: `#${od.color}` }}>{od.name}</p>
                 <audio src={od.message} controls></audio>;
               </div>
@@ -114,17 +113,18 @@ const sendMessageViaKeyBoard=e=>{
             return (
               <div className="Message" >
 
-              <img src={Photo} className="chat-photo"></img>
+              <img src={`${APIURL}/public/uploads/${userPhoto}`} className="chat-photo"></img>
               <p  style={{ backgroundColor: `#${od.color}` }}>
                 {od.name} : {od.message}
               </p>
               </div>
             );
           }else if(od.name !== "You" && od.message !== ""){
+            console.log(userPhoto);
             return (
               <div className="Message-notSelf" >
 
-              <img src={Photo} className="chat-photo"></img>
+              <img src={`${APIURL}/public/uploads/${userPhoto}`} className="chat-photo"></img>
               <p  style={{ backgroundColor: `#${od.color}` }}>
                 {od.name} : {od.message}
               </p>
