@@ -1,25 +1,53 @@
 import React, { useEffect, useState } from "react";
-
+import Style from './ChatCreatorFormStyle.json'
+import './ChatCreatorFormStyle.css'
 import ChatContainer from "../../ChatContainer/ChatContainer";
-
-const ChatCreatorForm = ({ createRoomHandler }) => {
+import Modal from '../../UI/Modal/Modal'
+const ChatCreatorForm = ({ createRoomHandler,formOpen,closeForm }) => {
   const [chatName, setChatName] = useState("");
+  const [password, setPassword] = useState('')
 
+useEffect(()=>{
+
+},[formOpen])
   return (
-    <div>
+    formOpen===true?
+    <Modal customStyle={Style.Modal} closeModal={() => closeForm()} open={formOpen}>
+    <div style={Style.Form}>
+      
       {chatName === "" ? (
         <h1>Please choose a chat name</h1>
       ) : (
         <h1>{chatName}</h1>
       )}
-
-      <input
+      <div className="form-content">
+      <div >
+      <input 
+        maxlength="39"
         type="text"
         placeholder="chat room name"
         onChange={(event) => setChatName(event.target.value)}
       ></input>
-      <button onClick={() => createRoomHandler(chatName)}>Create Room</button>
+      </div>
+      <div>
+      <input 
+        maxlength="13"
+        type="password"
+        placeholder="Please Enter Password"
+        onChange={(event) => setPassword(event.target.value)}
+      ></input>
+      </div>
+      <div>
+        {chatName==="" ? <button 
+       onClick={() => createRoomHandler(chatName)} disabled>Create Room
+       </button>:
+       <button 
+       onClick={() => createRoomHandler(chatName)} >Create Room
+       </button>}
+      </div>
     </div>
+    </div>
+    </Modal>:null
   );
 };
 

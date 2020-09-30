@@ -2,20 +2,30 @@ import React, { Children, useEffect } from "react";
 
 import "./Modal.css";
 
-const Modal = ({ open, closeModal, children }) => {
+const Modal = ({ open, closeModal, children,customStyle ,header,footer}) => {
   useEffect(() => {}, [open]);
   return open ? (
-    <div class="modal-content">
-      <div class="modal-header">
+
+
+    <div style={customStyle} class="modal-content">
+      {
+        header ?   <div class="modal-header">
         <span onClick={() => closeModal()} class="close">
           &times;
         </span>
         <h2>Modal Header</h2>
-      </div>
+      </div>:
+      <span onClick={() => closeModal()} class="close">
+      &times;
+    </span>
+      }
       <div class="modal-body">{children}</div>
-      <div class="modal-footer">
+      {
+        header ?   <div class="modal-footer">
         <h3>Modal Footer</h3>
-      </div>
+      </div>:null
+      }
+      
     </div>
   ) : null;
 };

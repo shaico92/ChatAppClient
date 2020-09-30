@@ -12,6 +12,7 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
   const [roomsAvailable, setRoomsAvailable] = useState([]);
   const [connectToRoom, setConnectToRoom] = useState(false);
   const [roomToConnect, setRoomToConnect] = useState(null);
+  
   const connectToRoomHandler = async (room, name) => {
     console.log(name);
     const data = { room: room, name: name };
@@ -21,6 +22,8 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
     setConnectToRoom(true);
   };
 
+  
+
   useEffect(() => {
     renderChatsHandler()
     console.log(` this is home ${loggedUserPhoto}`);
@@ -28,23 +31,25 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
   const createRoomHandler = (chatName) => {
     setRoomCreated(true);
     setCreateRoom(false);
-    console.log(chatName);
-
-    let biggestID = [];
+    
 
     const roomDefinition = {
-      roomId: Math.max(...biggestID) + 1,
+      roomId: roomsAvailable.length + 1,
       roomName: chatName,
       roomAdmin: loggedUserName,
     };
 
     axios
       .post("/chats/createRoom", roomDefinition)
-      .then( (res) => {})
+      .then( (res) => 
+      {
+        setRoomsAvailable([...roomsAvailable,res.data[res.data.length-1]])
+      })
       .catch((err) => {});
   };
 
-  useEffect(() => {}, [roomCreated]);
+   
+
 
   const renderChatsHandler = () => {
     axios
@@ -52,6 +57,7 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
       .then( async(res) => {
         const tempArray = res.data;
       await  setRoomsAvailable(tempArray);
+      console.log(roomsAvailable);
       })
       .catch((err) => {
         console.log(err);
@@ -73,7 +79,7 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
   };
 
   const showChat = () => {
-    return (
+    return(
       <div style={{ flexDirection: "column" }}>
         <div>
           <h1>Welcome {loggedUserName} you can now start your own chat</h1>
@@ -81,12 +87,15 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
           <button onClick={() => setCreateRoom(true)}>
             Create Your own Chat Room
           </button>
-          {openRoomCreateForm === true ? (
             <ChatCreatorForm
+              closeForm={()=>setCreateRoom(false)}
+              formOpen={openRoomCreateForm}
               userAdmin={loggedUserName}
               createRoomHandler={(chatName) => createRoomHandler(chatName)}
             />
-          ) : null}
+          
+            
+      
         </div>
         <ul
           style={{

@@ -25,7 +25,7 @@ export const Nav= [
     hidden : true,
     class : "nav-item",
     ref: '/chat'
-  }
+  },
 ];
 
 
