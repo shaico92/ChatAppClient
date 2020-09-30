@@ -44,7 +44,9 @@ const Landing = ({ isUserLogged }) => {
 
       {renderSwitch(pageIndex)}
       <button onClick={() => setModalopen(true)}>openModal</button>
-      <Modal closeModal={() => setModalopen(false)} open={modalOpen} />
+      <Modal closeModal={() => setModalopen(false)} open={modalOpen}>
+        משהו משהו משהו
+      </Modal>
     </div>
   );
 };
