@@ -6,11 +6,12 @@ import Login from "../Authentication/Login";
 import Signup from "../Authentication/Signup";
 import Home from "../Landing/Home/Home";
 import axios from "../api/axios";
-import './Landing.css'
+import "./Landing.css";
+import Modal from "../UI/Modal/Modal";
 import SideBar from "../SideBar/Sidebar";
 const Landing = ({ isUserLogged }) => {
   const [pageIndex, setPageIndex] = useState(null);
-  
+  const [modalOpen, setModalopen] = useState(false);
   const getSmth = () => {
     axios.get("/", () => {
       console.log("sending req to server");
@@ -42,6 +43,8 @@ const Landing = ({ isUserLogged }) => {
       <Header changeIndex={(label) => setPageIndex(label)} />
 
       {renderSwitch(pageIndex)}
+      <button onClick={() => setModalopen(true)}>openModal</button>
+      <Modal closeModal={() => setModalopen(false)} open={modalOpen} />
     </div>
   );
 };
