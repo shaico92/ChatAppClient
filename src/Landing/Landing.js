@@ -11,11 +11,16 @@ import Modal from "../UI/Modal/Modal";
 import SideBar from "../SideBar/Sidebar";
 const Landing = ({ isUserLogged }) => {
   const [pageIndex, setPageIndex] = useState(null);
-  
+
   const getSmth = () => {
-    axios.get("/", () => {
-      console.log("sending req to server");
-    });
+    axios
+      .get("/", () => {
+        console.log("sending req to server");
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -43,8 +48,6 @@ const Landing = ({ isUserLogged }) => {
       <Header changeIndex={(label) => setPageIndex(label)} />
 
       {renderSwitch(pageIndex)}
-      
-      
     </div>
   );
 };

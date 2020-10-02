@@ -6,7 +6,7 @@ import axios from "../api/axios";
 import Home from "../Landing/Home/Home";
 const Login = ({}) => {
   const [userEmail, setuserEmail] = useState("");
-  const [userPhoto, setUserPhoto] = useState('')
+  const [userPhoto, setUserPhoto] = useState("");
   const [userName, setuserName] = useState(null);
   const [userpass, setUserpass] = useState("");
   const [submit, setSubmit] = useState(false);
@@ -39,25 +39,21 @@ const Login = ({}) => {
         .catch((err) => {
           console.log(err);
         });
-        
     }
   };
   useEffect(() => {
     // setUserpass("");
     // setuserEmail("");
   }, [submit]);
-  //method to send event on chat socket
 
-  // case true:
-  //   return <ChatContainer currentUser={username} />;
   switch (userAuthPassed) {
     case true:
       return (
-        <Home loggedUserPhoto={userPhoto} loggedUserName={userName} isloggedUser={userAuthPassed} />
-        // <div>
-        //   <h1>Welcome {userEmail} you can now start your own chat</h1>
-        //   <button>Create Your own Chat Room</button>
-        // </div>
+        <Home
+          loggedUserPhoto={userPhoto}
+          loggedUserName={userName}
+          isloggedUser={userAuthPassed}
+        />
       );
 
     default:

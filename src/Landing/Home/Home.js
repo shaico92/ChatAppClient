@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import socket from "../../api/api";
 import ChatCreatorForm from "../../Chat/ChatCreatorForm/ChatCreatorForm";
 import ChatRooms from "../../Chat/ChatRooms/ChatRooms";
-import Chat from '../../Chat/Chat'
+import Chat from "../../Chat/Chat";
 import { NavLink } from "react-router-dom";
 
 import axios from "../../api/axios";
@@ -12,7 +12,7 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
   const [roomsAvailable, setRoomsAvailable] = useState([]);
   const [connectToRoom, setConnectToRoom] = useState(false);
   const [roomToConnect, setRoomToConnect] = useState(null);
-  
+
   const connectToRoomHandler = async (room, name) => {
     console.log(name);
     const data = { room: room, name: name };
@@ -22,16 +22,9 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
     setConnectToRoom(true);
   };
 
-  
-
-  useEffect(() => {
-    renderChatsHandler()
-    console.log(` this is home ${loggedUserPhoto}`);
-  },[]);
   const createRoomHandler = (chatName) => {
     setRoomCreated(true);
     setCreateRoom(false);
-    
 
     const roomDefinition = {
       roomId: roomsAvailable.length + 1,
@@ -41,23 +34,19 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
 
     axios
       .post("/chats/createRoom", roomDefinition)
-      .then( (res) => 
-      {
-        setRoomsAvailable([...roomsAvailable,res.data[res.data.length-1]])
+      .then((res) => {
+        setRoomsAvailable([...roomsAvailable, res.data[res.data.length - 1]]);
       })
       .catch((err) => {});
   };
 
-   
-
-
   const renderChatsHandler = () => {
     axios
       .get("/chats")
-      .then( async(res) => {
+      .then(async (res) => {
         const tempArray = res.data;
-      await  setRoomsAvailable(tempArray);
-      console.log(roomsAvailable);
+        await setRoomsAvailable(tempArray);
+        console.log(roomsAvailable);
       })
       .catch((err) => {
         console.log(err);
@@ -78,8 +67,12 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
       });
   };
 
+  useEffect(() => {
+    renderChatsHandler();
+  }, []);
+
   const showChat = () => {
-    return(
+    return (
       <div style={{ flexDirection: "column" }}>
         <div>
           <h1>Welcome {loggedUserName} you can now start your own chat</h1>
@@ -87,15 +80,12 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
           <button onClick={() => setCreateRoom(true)}>
             Create Your own Chat Room
           </button>
-            <ChatCreatorForm
-              closeForm={()=>setCreateRoom(false)}
-              formOpen={openRoomCreateForm}
-              userAdmin={loggedUserName}
-              createRoomHandler={(chatName) => createRoomHandler(chatName)}
-            />
-          
-            
-      
+          <ChatCreatorForm
+            closeForm={() => setCreateRoom(false)}
+            formOpen={openRoomCreateForm}
+            userAdmin={loggedUserName}
+            createRoomHandler={(chatName) => createRoomHandler(chatName)}
+          />
         </div>
         <ul
           style={{
@@ -104,7 +94,6 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
             display: "flex",
           }}
         >
-          
           <ChatRooms
             isConnecting={connectToRoom}
             rooms={roomsAvailable}
@@ -123,7 +112,11 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
       return connectToRoom === false && roomToConnect === null ? (
         <div>{showChat()}</div>
       ) : (
-        <Chat loggedUserPhotoChat={loggedUserPhoto} room={roomToConnect} currentUser={loggedUserName} />
+        <Chat
+          loggedUserPhotoChat={loggedUserPhoto}
+          room={roomToConnect}
+          currentUser={loggedUserName}
+        />
       );
     default:
       return (
@@ -133,5 +126,4 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto }) => {
       );
   }
 };
-
 export default Home;

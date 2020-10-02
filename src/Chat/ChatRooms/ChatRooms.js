@@ -3,17 +3,9 @@ import React, { useEffect } from "react";
 import ChatRoom from "./ChatRoom/ChatRoom";
 
 const ChatRooms = ({ rooms, userToLog, isConnecting, roomToConnect }) => {
-
-  useEffect(()=>{
-console.log(rooms);
-  },[rooms])
-
+  useEffect(() => {}, [rooms]);
 
   const roomsHandler = () => {
-
-
-
-
     const roomsA = rooms.map((room) => (
       <ChatRoom
         id={room.roomId}
