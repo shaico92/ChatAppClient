@@ -2,7 +2,7 @@ import React from 'react'
 import ChatContainer from '../ChatContainer/ChatContainer'
 import './Chat.css'
 const Chat = ({ room, currentUser ,loggedUserPhotoChat}) => {
-  console.log(` this is Chat ${loggedUserPhotoChat}`);
+  console.log(` this is Chat ${currentUser}`);
   return (
     <div className="Chat">
 

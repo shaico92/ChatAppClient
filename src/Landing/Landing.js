@@ -12,24 +12,15 @@ import SideBar from "../SideBar/Sidebar";
 const Landing = ({ isUserLogged }) => {
   const [pageIndex, setPageIndex] = useState(null);
 
-  const getSmth = () => {
-    axios
-      .get("/", () => {
-        console.log("sending req to server");
-      })
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => console.log(err));
-  };
+  
+  
 
   useEffect(() => {
     console.log(pageIndex);
+  
   }, [pageIndex]);
 
-  useEffect(() => {
-    getSmth();
-  });
+  
   const renderSwitch = (param) => {
     switch (param) {
       case "home":
@@ -45,7 +36,7 @@ const Landing = ({ isUserLogged }) => {
 
   return (
     <div className={"Landing"}>
-      <Header changeIndex={(label) => setPageIndex(label)} />
+      <Header  isUserLogged={true}  changeIndex={(label) => setPageIndex(label)} />
 
       {renderSwitch(pageIndex)}
     </div>

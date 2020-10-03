@@ -4,7 +4,7 @@ import Input_ from "./Input/Input";
 import Output_ from "./Output/Output";
 import './ChatContainer.css'
 const ChatContainer = ({ room, currentUser ,currentUserPhoto }) => {
-  console.log(` this is chatcontainer ${currentUserPhoto}`);
+  console.log(` this is chatcontainer ${currentUser}`);
   return (
     <div className="ChatContainer"
       

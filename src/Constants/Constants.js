@@ -26,6 +26,14 @@ export const Nav= [
     class : "nav-item",
     ref: '/chat'
   },
+  {
+    label : "logout",
+    icon : "logout",
+    hidden : true,
+    class : "nav-item",
+    ref: '/logout'
+  },
+
 ];
 
 

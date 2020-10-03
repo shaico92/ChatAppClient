@@ -7,11 +7,22 @@ import Home from "../Landing/Home/Home";
 const Login = ({}) => {
   const [userEmail, setuserEmail] = useState("");
   const [userPhoto, setUserPhoto] = useState("");
+  
   const [userName, setuserName] = useState(null);
   const [userpass, setUserpass] = useState("");
   const [submit, setSubmit] = useState(false);
+  const [cookieUser, setCookieUser] = useState(document.cookie)
   const [userAuthPassed, setUserAuthPassed] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+
+  
+  const setCookie =(email,name,image)=>{
+    
+      document.cookie=`username=${email}; path=/`
+      document.cookie=`name=${name}; path=/`
+      document.cookie=`image=${image}; path=/`
+    
+  }
 
   const authenticate = (email, password) => {
     if (
@@ -26,14 +37,26 @@ const Login = ({}) => {
         .post("/login", userCred)
         .then(async (res) => {
           console.log(res.data);
-          if (res.data.answer !== true) {
+          if (res.data.answer !== true)   {
             setErrorMsg(res.data);
           } else {
+
+            const cookie = {
+              name : res.data.name,
+              image :res.data.image,
+              email : res.data.email,
+            }
+
             console.log(res.data);
             const result = res.data.answer;
-            await setUserAuthPassed(result);
-            await setuserName(res.data.name);
-            await setUserPhoto(res.data.image);
+             setUserAuthPassed(result);
+             setuserName(res.data.name);
+             console.log(userName);
+             setUserPhoto(res.data.image);
+              setCookie(cookie.email,cookie.name,cookie.image)
+              setCookieUser(cookie)
+             
+            
           }
         })
         .catch((err) => {
@@ -50,6 +73,9 @@ const Login = ({}) => {
     case true:
       return (
         <Home
+          
+          cookie = {cookieUser}
+          loggedUserEmail={userEmail}
           loggedUserPhoto={userPhoto}
           loggedUserName={userName}
           isloggedUser={userAuthPassed}
