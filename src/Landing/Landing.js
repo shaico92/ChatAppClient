@@ -9,9 +9,10 @@ import axios from "../api/axios";
 import "./Landing.css";
 import Modal from "../UI/Modal/Modal";
 import SideBar from "../SideBar/Sidebar";
-const Landing = ({ isUserLogged }) => {
+import Logout from "../Authentication/Logout/Logout";
+const Landing = ({ setUSerin }) => {
   const [pageIndex, setPageIndex] = useState(null);
-
+  const [userIn,serUserIn] = useState(false)
   
   
 
@@ -20,6 +21,16 @@ const Landing = ({ isUserLogged }) => {
   
   }, [pageIndex]);
 
+  useEffect(()=>{
+    if (document.cookie!=='') {
+      
+      serUserIn(true)
+    }else{
+      
+      
+    }
+  },[])
+  
   
   const renderSwitch = (param) => {
     switch (param) {
@@ -28,7 +39,10 @@ const Landing = ({ isUserLogged }) => {
       case "sign up":
         return <Signup />;
       case "login":
-        return <Login />;
+        
+        return <Login userIn={()=>serUserIn(1)}/>;
+        case "logout":
+          return <Logout cookieToDelete={document.cookie}/>
       default:
         return <Home />;
     }
@@ -36,7 +50,7 @@ const Landing = ({ isUserLogged }) => {
 
   return (
     <div className={"Landing"}>
-      <Header  isUserLogged={true}  changeIndex={(label) => setPageIndex(label)} />
+      <Header  isUserLogged={userIn}  changeIndex={(label) => setPageIndex(label)} />
 
       {renderSwitch(pageIndex)}
     </div>

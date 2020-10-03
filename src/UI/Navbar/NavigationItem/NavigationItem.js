@@ -7,7 +7,7 @@ const NavigationItem = ({ ref1, key, classS, label, click }) => {
   return (
     <NavLink
       exact
-      className={` link ${classS}`}
+      className={` link Fade-In ${classS}`}
       onClick={() => click()}
       
       to={ref1}

@@ -4,7 +4,7 @@ import ChatContainer from "../ChatContainer/ChatContainer";
 import socket from "../api/api";
 import axios from "../api/axios";
 import Home from "../Landing/Home/Home";
-const Login = ({}) => {
+const Login = ({userIn}) => {
   const [userEmail, setuserEmail] = useState("");
   const [userPhoto, setUserPhoto] = useState("");
   
@@ -50,6 +50,7 @@ const Login = ({}) => {
             console.log(res.data);
             const result = res.data.answer;
              setUserAuthPassed(result);
+             userIn(true)
              setuserName(res.data.name);
              console.log(userName);
              setUserPhoto(res.data.image);

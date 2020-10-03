@@ -1,11 +1,10 @@
-import React from "react";
+import React,{useEffect} from "react";
 //import NavItems from "../../Constants/Constants";
 import NavBar from "../../UI/Navbar/Navbar";
 
 import Login from "../../Authentication/Login";
 import ChatContainer from "../../ChatContainer/ChatContainer";
 const Header = ({ changeIndex, isUserLogged }) => {
-
 
 
 
