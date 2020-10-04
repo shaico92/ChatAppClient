@@ -21,14 +21,14 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto ,loggedUserEmail ,
     //socket.removeListener("new-user");
     setConnectToRoom(true);
   };
-  const parseCookie = str =>
-  str
-    .split(';')
-    .map(v => v.split('='))
-    .reduce((acc, v) => {
-      acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
-      return acc;
-    }, {});
+  // const parseCookie = str =>
+  // str
+  //   .split(';')
+  //   .map(v => v.split('='))
+  //   .reduce((acc, v) => {
+  //     acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
+  //     return acc;
+  //   }, {});
   const createRoomHandler = (chatName) => {
     setRoomCreated(true);
     setCreateRoom(false);
@@ -48,32 +48,28 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto ,loggedUserEmail ,
   };
 
   const logged = ()=>{
-    if (!document.cookie) {
-      
     
+    
+   
+    if (!cookie&&!isloggedUser) {
+      console.log(cookie);
       return(<h1>first you need to log in</h1>)  
-    
-    
-    }
-    const currentCookie = parseCookie(document.cookie) 
-    console.log(currentCookie); 
-    if (!cookie&&!currentCookie) {
-      return(<h1>first you need to log in</h1>)  
-    }else if(currentCookie){
+    }else if(cookie){
+      console.log(cookie);
     return(
     connectToRoom === false && roomToConnect === null ?
    <div style={{ flexDirection: "column" }}>
      <div>
-       <h1>Welcome {currentCookie.name} you can now start your own chat</h1>
+       <h1>Welcome {cookie.name} you can now start your own chat</h1>
        
-       {currentCookie.name ?  <button onClick={() => logout()}>logout</button>: null}
+       {cookie.name ?  <button onClick={() => logout()}>logout</button>: null}
        <button onClick={() => setCreateRoom(true)}>
          Create Your own Chat Room
        </button>
        <ChatCreatorForm
          closeForm={() => setCreateRoom(false)}
          formOpen={openRoomCreateForm}
-         userAdmin={currentCookie.name}
+         userAdmin={cookie.name}
          createRoomHandler={(chatName) => createRoomHandler(chatName)}
        />
      </div>
@@ -93,9 +89,9 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto ,loggedUserEmail ,
    </div>:
     (
            <Chat
-             loggedUserPhotoChat={currentCookie.image}
+             loggedUserPhotoChat={cookie.image}
              room={roomToConnect}
-             currentUser={currentCookie.name}
+             currentUser={cookie.name}
            />
          )
 
@@ -121,9 +117,9 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto ,loggedUserEmail ,
       .get(`/chats/${roomNum}`)
       .then(async (res) => {
         if (res.data === true) {
-          const currentCookie=  parseCookie(document.cookie)
+          
           setRoomToConnect(roomNum);
-          connectToRoomHandler(roomNum, currentCookie.name);
+          connectToRoomHandler(roomNum, cookie.name);
         }
       })
       .catch((err) => {
@@ -142,7 +138,7 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto ,loggedUserEmail ,
     renderChatsHandler();
     
     
-  }, []);
+  }, [cookie]);
 
   
 

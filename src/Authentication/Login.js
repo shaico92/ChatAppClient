@@ -2,27 +2,20 @@ import React, { useEffect, useState } from "react";
 
 import ChatContainer from "../ChatContainer/ChatContainer";
 import socket from "../api/api";
+import useCookie from '../api/cookie'
 import axios from "../api/axios";
 import Home from "../Landing/Home/Home";
 const Login = ({userIn}) => {
   const [userEmail, setuserEmail] = useState("");
   const [userPhoto, setUserPhoto] = useState("");
-  
+  const [cookie, setCookieInbrowser, deleteCookie] = useCookie()
   const [userName, setuserName] = useState(null);
   const [userpass, setUserpass] = useState("");
   const [submit, setSubmit] = useState(false);
-  const [cookieUser, setCookieUser] = useState(document.cookie)
+  // const [cookieUser, setCookieUser] = useState(document.cookie)
   const [userAuthPassed, setUserAuthPassed] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  
-  const setCookie =(email,name,image)=>{
-    
-      document.cookie=`username=${email}; path=/`
-      document.cookie=`name=${name}; path=/`
-      document.cookie=`image=${image}; path=/`
-    
-  }
 
   const authenticate = (email, password) => {
     if (
@@ -41,21 +34,16 @@ const Login = ({userIn}) => {
             setErrorMsg(res.data);
           } else {
 
-            const cookie = {
-              name : res.data.name,
-              image :res.data.image,
-              email : res.data.email,
-            }
-
+            const userDet = {email:res.data.email,name:res.data.name,image:res.data.image}
             console.log(res.data);
             const result = res.data.answer;
              setUserAuthPassed(result);
-             userIn(true)
+             
              setuserName(res.data.name);
              console.log(userName);
              setUserPhoto(res.data.image);
-              setCookie(cookie.email,cookie.name,cookie.image)
-              setCookieUser(cookie)
+             
+             userIn(userDet)
              
             
           }
@@ -66,8 +54,7 @@ const Login = ({userIn}) => {
     }
   };
   useEffect(() => {
-    // setUserpass("");
-    // setuserEmail("");
+    
   }, [submit]);
 
   switch (userAuthPassed) {
@@ -75,7 +62,7 @@ const Login = ({userIn}) => {
       return (
         <Home
           
-          cookie = {cookieUser}
+          cookie = {cookie}
           loggedUserEmail={userEmail}
           loggedUserPhoto={userPhoto}
           loggedUserName={userName}

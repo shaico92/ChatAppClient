@@ -2,17 +2,18 @@ import React, { useState,useEffect } from "react";
 import {Nav} from "../../Constants/Constants";
 import NavigationItem from "./NavigationItem/NavigationItem";
 import "./Navbar.css";
-const NavBar = ({ setCurrentComponent, userLogged  }) => {
+const NavBar = ({ setCurrentComponent, userLogged, cookie  }) => {
 
 useEffect(() => {
   console.log('rendering navbar');
-  console.log(userLogged);
+  console.log(cookie);
 
-}, []);
+}, [cookie]);
 
   const setNavMenuLogged=()=>{
     const nav = Nav.map((item) => (
       <NavigationItem
+        
         click={() => setCurrentComponent(item.label)}
         ref1={item.ref}
         key={item.icon}
@@ -27,6 +28,7 @@ useEffect(() => {
   const setNavMenuFilter = () => {
     const nav = Nav.filter(item=>!item.hidden).map((item) => (
       <NavigationItem
+      
         click={() => setCurrentComponent(item.label)}
         ref1={item.ref}
         key={item.icon}
@@ -44,9 +46,10 @@ useEffect(() => {
     <div>
       {
        
-        !userLogged ?  <nav className={"topnav"}>{setNavMenuFilter()}</nav>
-        :
+        !cookie ?  <nav className={"topnav"}>{setNavMenuFilter()}</nav>
+        : 
         <nav className={"topnav"}>{setNavMenuLogged()}</nav>
+        
       }
 
 

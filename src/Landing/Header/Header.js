@@ -4,13 +4,14 @@ import NavBar from "../../UI/Navbar/Navbar";
 
 import Login from "../../Authentication/Login";
 import ChatContainer from "../../ChatContainer/ChatContainer";
-const Header = ({ changeIndex, isUserLogged }) => {
+const Header = ({ changeIndex, isUserLogged ,cookie }) => {
 
-
+console.log( ' this is from header.js');
+console.log(cookie);
 
   return (
     <div className={"Header"}>
-      <NavBar userLogged={isUserLogged} setCurrentComponent={(label) => changeIndex(label)} />
+      <NavBar cookie={cookie} userLogged={isUserLogged} setCurrentComponent={(label) => changeIndex(label)} />
     </div>
   );
 };

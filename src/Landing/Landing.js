@@ -7,14 +7,15 @@ import Signup from "../Authentication/Signup";
 import Home from "../Landing/Home/Home";
 import axios from "../api/axios";
 import "./Landing.css";
+import useCookie from '../api/cookie'
 import Modal from "../UI/Modal/Modal";
 import SideBar from "../SideBar/Sidebar";
 import Logout from "../Authentication/Logout/Logout";
-const Landing = ({ setUSerin }) => {
+const Landing = ({  }) => {
   const [pageIndex, setPageIndex] = useState(null);
-  const [userIn,serUserIn] = useState(false)
+  const [userIn,serUserIn] = useState(null)
   
-  
+  const [cookie, setCookieInbrowser, deleteCookie] = useCookie()
 
   useEffect(() => {
     console.log(pageIndex);
@@ -22,35 +23,43 @@ const Landing = ({ setUSerin }) => {
   }, [pageIndex]);
 
   useEffect(()=>{
-    if (document.cookie!=='') {
-      
+
+    if (cookie) {
+      console.log(cookie);
       serUserIn(true)
     }else{
       
       
     }
+    console.log(cookie);
   },[])
   
   
   const renderSwitch = (param) => {
     switch (param) {
       case "home":
-        return <Home />;
+        return <Home cookie={cookie}/>;
       case "sign up":
         return <Signup />;
       case "login":
         
-        return <Login userIn={()=>serUserIn(1)}/>;
+        return <Login  userIn={(obj)=>{
+          console.log('this is from userin() in login component');
+          console.log(obj);
+          setCookieInbrowser(obj)
+        }}/>;
         case "logout":
-          return <Logout cookieToDelete={document.cookie}/>
+          return <Logout cookieToDelete={cookie} deleteCookie={(value)=>{console.log('setting cookie to null');console.log(value); deleteCookie(value)}}/>
+          case "chat":
+          return <h1>Chat</h1>
       default:
-        return <Home />;
+        return <Home cookie={cookie}/>;
     }
   };
 
   return (
     <div className={"Landing"}>
-      <Header  isUserLogged={userIn}  changeIndex={(label) => setPageIndex(label)} />
+      <Header cookie={cookie}  isUserLogged={userIn}  changeIndex={(label) => setPageIndex(label)} />
 
       {renderSwitch(pageIndex)}
     </div>
