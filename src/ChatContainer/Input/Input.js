@@ -9,7 +9,8 @@ const APIURL=axios.defaults.baseURL;
 const Input_ = ({ currentUser, userPhoto }) => {
   
   const sendChatMessage = (content) => {
-    socket.emit("send-chat-message", content);
+    const smth = {image:userPhoto,content:content}
+    socket.emit("send-chat-message", smth);
   };
 const inputRef = useRef()
 const [finishedMessage,setFinishedMessage]= useState(false)
@@ -61,7 +62,7 @@ const sendMessageViaKeyBoard=e=>{
   useEffect(() => {
     socket.on("chat-message", (message) => {
       console.log(message);
-      if (message.message !== "") {
+      if (message.message.content !== "") {
         setOutput([...output, message]);
       }
     });
@@ -124,7 +125,7 @@ const sendMessageViaKeyBoard=e=>{
             return (
               <div className="Message-notSelf" >
 
-              <img src={`${APIURL}/public/uploads/${userPhoto}`} className="chat-photo"></img>
+              <img src={`${APIURL}/public/uploads/${od.image}`} className="chat-photo"></img>
               <p  style={{ backgroundColor: `#${od.color}` }}>
                 {od.name} : {od.message}
               </p>
