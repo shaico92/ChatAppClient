@@ -8,6 +8,8 @@ const Chat = ({ room, currentUser ,loggedUserPhotoChat}) => {
 
 
     <ChatContainer currentUserPhoto={loggedUserPhotoChat}  room= {room} currentUser= { currentUser}/>
+
+    <button className={'Exit-Chat'}>exit chat room</button>
     </div>
   );
 };

@@ -36,7 +36,7 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto ,loggedUserEmail ,
     const roomDefinition = {
       roomId: roomsAvailable.length + 1,
       roomName: chatName,
-      roomAdmin: loggedUserName,
+      roomAdmin: cookie.name,
     };
 
     axios
@@ -89,6 +89,7 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto ,loggedUserEmail ,
    </div>:
     (
            <Chat
+              
              loggedUserPhotoChat={cookie.image}
              room={roomToConnect}
              currentUser={cookie.name}

@@ -4,6 +4,7 @@ import NavBar from "../../UI/Navbar/Navbar";
 
 import Login from "../../Authentication/Login";
 import ChatContainer from "../../ChatContainer/ChatContainer";
+import './Header.css'
 const Header = ({ changeIndex, isUserLogged ,cookie }) => {
 
 console.log( ' this is from header.js');
