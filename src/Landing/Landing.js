@@ -67,7 +67,7 @@ const Landing = ({}) => {
             }}
           />
         );
-      case "chat":
+      case "chats":
         return <Chats cookie={cookie} />;
       default:
         return <Home cookie={cookie} />;

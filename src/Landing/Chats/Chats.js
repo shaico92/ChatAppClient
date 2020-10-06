@@ -6,7 +6,7 @@ import Chat from "../../Chat/Chat";
 import { NavLink } from "react-router-dom";
 
 import axios from "../../api/axios";
-const Home = ({
+const Chats = ({
   isloggedUser,
   loggedUserName,
   loggedUserPhoto,
@@ -27,14 +27,7 @@ const Home = ({
     //socket.removeListener("new-user");
     setConnectToRoom(true);
   };
-  // const parseCookie = str =>
-  // str
-  //   .split(';')
-  //   .map(v => v.split('='))
-  //   .reduce((acc, v) => {
-  //     acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
-  //     return acc;
-  //   }, {});
+
   const createRoomHandler = (chatName) => {
     setRoomCreated(true);
     setCreateRoom(false);
@@ -138,4 +131,4 @@ const Home = ({
 
   return <div>{logged()}</div>;
 };
-export default Home;
+export default Chats;

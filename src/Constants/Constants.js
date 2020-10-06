@@ -1,4 +1,4 @@
-export const Nav= [
+export const Nav = [
   {
     label: "home",
     icon: "home",
@@ -15,26 +15,22 @@ export const Nav= [
   {
     label: "sign up",
     icon: "sign_up",
-    
+
     class: "nav-item",
     ref: "/signup",
   },
   {
-    label : "chat",
-    icon : "chat",
-    hidden : true,
-    class : "nav-item",
-    ref: '/chat'
+    label: "chats",
+    icon: "chat",
+    hidden: true,
+    class: "nav-item",
+    ref: "/chat",
   },
   {
-    label : "logout",
-    icon : "logout",
-    hidden : true,
-    class : "nav-item",
-    ref: '/logout'
+    label: "logout",
+    icon: "logout",
+    hidden: true,
+    class: "nav-item",
+    ref: "/logout",
   },
-
 ];
-
-
-
