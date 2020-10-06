@@ -37,7 +37,7 @@ const useCookie = () => {
         return acc;
       }, {});
 
-  return [cookie, setCookieInbrowser, deleteCookie];
+  return [cookie, setCookie, parseCookie, setCookieInbrowser, deleteCookie];
 };
 
 export default useCookie;

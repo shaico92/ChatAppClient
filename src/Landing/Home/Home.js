@@ -6,17 +6,23 @@ import Chat from "../../Chat/Chat";
 import { NavLink } from "react-router-dom";
 
 import axios from "../../api/axios";
-const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto ,loggedUserEmail ,cookie }) => {
+const Home = ({
+  isloggedUser,
+  loggedUserName,
+  loggedUserPhoto,
+  loggedUserEmail,
+  cookie,
+}) => {
   const [openRoomCreateForm, setCreateRoom] = useState(false);
   const [roomCreated, setRoomCreated] = useState(false);
   const [roomsAvailable, setRoomsAvailable] = useState([]);
   const [connectToRoom, setConnectToRoom] = useState(false);
   const [roomToConnect, setRoomToConnect] = useState(null);
-  const [loggedUSer, setLoggedUser] = useState(null)
-  const connectToRoomHandler =  (room, name) => {
+  const [loggedUSer, setLoggedUser] = useState(null);
+  const connectToRoomHandler = (room, name) => {
     console.log(name);
     const data = { room: room, name: name };
-     socket.emit("new-user", data);
+    socket.emit("new-user", data);
 
     //socket.removeListener("new-user");
     setConnectToRoom(true);
@@ -47,58 +53,54 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto ,loggedUserEmail ,
       .catch((err) => {});
   };
 
-  const logged = ()=>{
-    
-    
-   
-    if (!cookie&&!isloggedUser) {
+  const logged = () => {
+    if (!cookie && !isloggedUser) {
       console.log(cookie);
-      return(<h1>first you need to log in</h1>)  
-    }else if(cookie){
+      return <h1>first you need to log in</h1>;
+    } else if (cookie) {
       console.log(cookie);
-    return(
-    connectToRoom === false && roomToConnect === null ?
-   <div style={{ flexDirection: "column" }}>
-     <div>
-       <h1>Welcome {cookie.name} you can now start your own chat</h1>
-       
-       {cookie.name ?  <button onClick={() => logout()}>logout</button>: null}
-       <button onClick={() => setCreateRoom(true)}>
-         Create Your own Chat Room
-       </button>
-       <ChatCreatorForm
-         closeForm={() => setCreateRoom(false)}
-         formOpen={openRoomCreateForm}
-         userAdmin={cookie.name}
-         createRoomHandler={(chatName) => createRoomHandler(chatName)}
-       />
-     </div>
-     <ul
-       style={{
-         flexDirection: "column",
-         width: "fit-content",
-         display: "flex",
-       }}
-     >
-       <ChatRooms
-         isConnecting={connectToRoom}
-         rooms={roomsAvailable}
-         roomToConnect={(roomNum) => getChat(roomNum)}
-       />
-     </ul>
-   </div>:
-    (
-           <Chat
-              
-             loggedUserPhotoChat={cookie.image}
-             room={roomToConnect}
-             currentUser={cookie.name}
-           />
-         )
+      return connectToRoom === false && roomToConnect === null ? (
+        <div style={{ flexDirection: "column" }}>
+          <div>
+            <h1>Welcome {cookie.name} you can now start your own chat</h1>
 
-    )
+            {cookie.name ? (
+              <button onClick={() => logout()}>logout</button>
+            ) : null}
+            <button onClick={() => setCreateRoom(true)}>
+              Create Your own Chat Room
+            </button>
+            <ChatCreatorForm
+              currentUserCookie={cookie}
+              closeForm={() => setCreateRoom(false)}
+              formOpen={openRoomCreateForm}
+              userAdmin={cookie.name}
+              createRoomHandler={(chatName) => createRoomHandler(chatName)}
+            />
+          </div>
+          <ul
+            style={{
+              flexDirection: "column",
+              width: "fit-content",
+              display: "flex",
+            }}
+          >
+            <ChatRooms
+              isConnecting={connectToRoom}
+              rooms={roomsAvailable}
+              roomToConnect={(roomNum) => getChat(roomNum)}
+            />
+          </ul>
+        </div>
+      ) : (
+        <Chat
+          loggedUserPhotoChat={cookie.image}
+          room={roomToConnect}
+          currentUser={cookie.name}
+        />
+      );
     }
-  }
+  };
 
   const renderChatsHandler = () => {
     axios
@@ -118,7 +120,6 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto ,loggedUserEmail ,
       .get(`/chats/${roomNum}`)
       .then(async (res) => {
         if (res.data === true) {
-          
           setRoomToConnect(roomNum);
           connectToRoomHandler(roomNum, cookie.name);
         }
@@ -127,26 +128,14 @@ const Home = ({ isloggedUser, loggedUserName, loggedUserPhoto ,loggedUserEmail ,
         console.log(err);
       });
   };
-  const logout=()=>{
-  
-
-    axios.post('/logout')
-    
-  }
+  const logout = () => {
+    axios.post("/logout");
+  };
 
   useEffect(() => {
-    
     renderChatsHandler();
-    
-    
   }, [cookie]);
 
-  
-
-  
-  return (
-    <div>{logged()}</div>
-  );
-  
+  return <div>{logged()}</div>;
 };
 export default Home;

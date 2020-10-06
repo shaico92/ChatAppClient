@@ -2,20 +2,19 @@ import React, { useEffect, useState } from "react";
 
 import ChatContainer from "../ChatContainer/ChatContainer";
 import socket from "../api/api";
-import useCookie from '../api/cookie'
+import useCookie from "../api/cookie";
 import axios from "../api/axios";
 import Home from "../Landing/Home/Home";
-const Login = ({userIn}) => {
+const Login = ({ userIn }) => {
   const [userEmail, setuserEmail] = useState("");
   const [userPhoto, setUserPhoto] = useState("");
-  const [cookie, setCookieInbrowser, deleteCookie] = useCookie()
+  const [cookie, setCookieInbrowser, deleteCookie] = useCookie();
   const [userName, setuserName] = useState(null);
   const [userpass, setUserpass] = useState("");
   const [submit, setSubmit] = useState(false);
   // const [cookieUser, setCookieUser] = useState(document.cookie)
   const [userAuthPassed, setUserAuthPassed] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
-
 
   const authenticate = (email, password) => {
     if (
@@ -30,22 +29,23 @@ const Login = ({userIn}) => {
         .post("/login", userCred)
         .then(async (res) => {
           console.log(res.data);
-          if (res.data.answer !== true)   {
+          if (res.data.answer !== true) {
             setErrorMsg(res.data);
           } else {
-
-            const userDet = {email:res.data.email,name:res.data.name,image:res.data.image}
+            const userDet = {
+              email: res.data.email,
+              name: res.data.name,
+              image: res.data.image,
+            };
             console.log(res.data);
             const result = res.data.answer;
-             setUserAuthPassed(result);
-             
-             setuserName(res.data.name);
-             console.log(userName);
-             setUserPhoto(res.data.image);
-             
-             userIn(userDet)
-             
-            
+            setUserAuthPassed(result);
+
+            setuserName(res.data.name);
+            console.log(userName);
+            setUserPhoto(res.data.image);
+
+            userIn(userDet);
           }
         })
         .catch((err) => {
@@ -53,16 +53,13 @@ const Login = ({userIn}) => {
         });
     }
   };
-  useEffect(() => {
-    
-  }, [submit]);
+  useEffect(() => {}, [submit]);
 
   switch (userAuthPassed) {
     case true:
       return (
         <Home
-          
-          cookie = {cookie}
+          cookie={cookie}
           loggedUserEmail={userEmail}
           loggedUserPhoto={userPhoto}
           loggedUserName={userName}
