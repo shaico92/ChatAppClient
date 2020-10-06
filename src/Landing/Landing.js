@@ -5,6 +5,8 @@ import { Switch, Route } from "react-router-dom";
 import Login from "../Authentication/Login";
 import Signup from "../Authentication/Signup";
 import Home from "../Landing/Home/Home";
+import Chats from "./Chats/Chats";
+
 import axios from "../api/axios";
 import "./Landing.css";
 import useCookie from "../api/cookie";
@@ -66,7 +68,7 @@ const Landing = ({}) => {
           />
         );
       case "chat":
-        return <h1>Chat</h1>;
+        return <Chats cookie={cookie} />;
       default:
         return <Home cookie={cookie} />;
     }
