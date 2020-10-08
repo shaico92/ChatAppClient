@@ -2,6 +2,7 @@ import React from "react";
 
 import socket from "../../../api/api";
 import ChatContainer from "../../../ChatContainer/ChatContainer";
+import "./ChatRoom.css";
 const ChatRoom = ({
   id,
   roomName,
@@ -13,10 +14,10 @@ const ChatRoom = ({
   connected,
 }) => {
   return (
-    <div key={id}>
-      <button onClick={() => chatToConnect()}>
+    <div key={id} className={"roomContainer"}>
+      <div className={"roomStyle"} onClick={() => chatToConnect()}>
         {roomName}-{roomAdmin}
-      </button>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,16 @@
+.roomStyle {
+  /* margin: 20px 20px; */
+  font-weight: 600;
+  width: fit-content;
+}
+
+.roomContainer {
+  border-bottom: solid black 2px;
+  cursor: pointer;
+  height: 100%;
+  padding: 20px 10px;
+}
+
+.roomContainer:hover {
+  background-color: chartreuse;
+}

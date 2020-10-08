@@ -4,7 +4,7 @@ import ChatCreatorForm from "../../Chat/ChatCreatorForm/ChatCreatorForm";
 import ChatRooms from "../../Chat/ChatRooms/ChatRooms";
 import Chat from "../../Chat/Chat";
 import { NavLink } from "react-router-dom";
-
+import "./Chats.css";
 import axios from "../../api/axios";
 const Chats = ({
   isloggedUser,
@@ -53,37 +53,27 @@ const Chats = ({
     } else if (cookie) {
       console.log(cookie);
       return connectToRoom === false && roomToConnect === null ? (
-        <div style={{ flexDirection: "column" }}>
-          <div>
-            <h1>Welcome {cookie.name} you can now start your own chat</h1>
+        <div className={"Chats-Layout"}>
+          <div>Welcome {cookie.name} you can now start your own chat</div>
 
-            {cookie.name ? (
-              <button onClick={() => logout()}>logout</button>
-            ) : null}
-            <button onClick={() => setCreateRoom(true)}>
-              Create Your own Chat Room
-            </button>
-            <ChatCreatorForm
-              currentUserCookie={cookie}
-              closeForm={() => setCreateRoom(false)}
-              formOpen={openRoomCreateForm}
-              userAdmin={cookie.name}
-              createRoomHandler={(chatName) => createRoomHandler(chatName)}
-            />
-          </div>
-          <ul
-            style={{
-              flexDirection: "column",
-              width: "fit-content",
-              display: "flex",
-            }}
-          >
+          <button onClick={() => setCreateRoom(true)}>
+            Create Your own Chat Room
+          </button>
+
+          <div className={"ChatRoomsContainer"}>
             <ChatRooms
               isConnecting={connectToRoom}
               rooms={roomsAvailable}
               roomToConnect={(roomNum) => getChat(roomNum)}
             />
-          </ul>
+          </div>
+          <ChatCreatorForm
+            currentUserCookie={cookie}
+            closeForm={() => setCreateRoom(false)}
+            formOpen={openRoomCreateForm}
+            userAdmin={cookie.name}
+            createRoomHandler={(chatName) => createRoomHandler(chatName)}
+          />
         </div>
       ) : (
         <Chat
@@ -129,6 +119,6 @@ const Chats = ({
     renderChatsHandler();
   }, [cookie]);
 
-  return <div>{logged()}</div>;
+  return logged();
 };
 export default Chats;

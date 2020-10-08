@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import ChatRoom from "./ChatRoom/ChatRoom";
-
+import "./ChatRooms.css";
 const ChatRooms = ({ rooms, userToLog, isConnecting, roomToConnect }) => {
   useEffect(() => {}, [rooms]);
 
@@ -20,7 +20,7 @@ const ChatRooms = ({ rooms, userToLog, isConnecting, roomToConnect }) => {
     return roomsA;
   };
 
-  return <div>{roomsHandler()}</div>;
+  return <div className={"ChatRooms"}>{roomsHandler()}</div>;
 };
 
 export default ChatRooms;
