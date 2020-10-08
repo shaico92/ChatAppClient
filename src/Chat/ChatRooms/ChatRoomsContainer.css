@@ -1,0 +1,7 @@
+.ChatRoomsContainer {
+  height: inherit;
+  margin: 20px 10px;
+  border: coral solid 2px;
+  width: fit-content;
+  overflow-y: auto;
+}

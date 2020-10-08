@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import socket from "../../api/api";
 import ChatCreatorForm from "../../Chat/ChatCreatorForm/ChatCreatorForm";
-import ChatRooms from "../../Chat/ChatRooms/ChatRooms";
+import ChatRoomsContainer from "../../Chat/ChatRooms/ChatRoomsContainer";
 import Chat from "../../Chat/Chat";
 import { NavLink } from "react-router-dom";
 import "./Chats.css";
@@ -60,13 +60,19 @@ const Chats = ({
             Create Your own Chat Room
           </button>
 
-          <div className={"ChatRoomsContainer"}>
+          {/* <div className={"ChatRoomsContainer"}>
             <ChatRooms
               isConnecting={connectToRoom}
               rooms={roomsAvailable}
               roomToConnect={(roomNum) => getChat(roomNum)}
             />
-          </div>
+          </div> */}
+          <ChatRoomsContainer
+            connectToRoom={connectToRoom}
+            roomsAvailable={roomsAvailable}
+            getChat={(roomNum) => getChat(roomNum)}
+          />
+
           <ChatCreatorForm
             currentUserCookie={cookie}
             closeForm={() => setCreateRoom(false)}
