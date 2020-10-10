@@ -48,7 +48,7 @@ const ChatCreatorForm = ({
                 Create Room
               </button>
             ) : (
-              <button onClick={() => createRoomHandler(chatName)}>
+              <button onClick={() => createRoomHandler({chatName: chatName,password : password})}>
                 Create Room
               </button>
             )}

@@ -6,6 +6,7 @@ import Chat from "../../Chat/Chat";
 import { NavLink } from "react-router-dom";
 import "./Chats.css";
 import axios from "../../api/axios";
+
 const Chats = ({
   isloggedUser,
   loggedUserName,
@@ -18,7 +19,7 @@ const Chats = ({
   const [roomsAvailable, setRoomsAvailable] = useState([]);
   const [connectToRoom, setConnectToRoom] = useState(false);
   const [roomToConnect, setRoomToConnect] = useState(null);
-  const [loggedUSer, setLoggedUser] = useState(null);
+  const [askConnectToRoom, setAskConnectToRoom] = useState(false);
   const connectToRoomHandler = (room, name) => {
     console.log(name);
     const data = { room: room, name: name };
@@ -28,14 +29,15 @@ const Chats = ({
     setConnectToRoom(true);
   };
 
-  const createRoomHandler = (chatName) => {
+  const createRoomHandler = (chatProps) => {
     setRoomCreated(true);
     setCreateRoom(false);
 
     const roomDefinition = {
       roomId: roomsAvailable.length + 1,
-      roomName: chatName,
+      roomName: chatProps.chatName,
       roomAdmin: cookie.name,
+      password: chatProps.password
     };
 
     axios
@@ -48,10 +50,10 @@ const Chats = ({
 
   const logged = () => {
     if (!cookie && !isloggedUser) {
-      console.log(cookie);
+
       return <h1>first you need to log in</h1>;
     } else if (cookie) {
-      console.log(cookie);
+
       return connectToRoom === false && roomToConnect === null ? (
         <div className={"Chats-Layout"}>
           <div>Welcome {cookie.name} you can now start your own chat</div>
@@ -60,25 +62,20 @@ const Chats = ({
             Create Your own Chat Room
           </button>
 
-          {/* <div className={"ChatRoomsContainer"}>
-            <ChatRooms
-              isConnecting={connectToRoom}
-              rooms={roomsAvailable}
-              roomToConnect={(roomNum) => getChat(roomNum)}
-            />
-          </div> */}
-          <ChatRoomsContainer
+          
+          <ChatRoomsContainer 
             connectToRoom={connectToRoom}
             roomsAvailable={roomsAvailable}
             getChat={(roomNum) => getChat(roomNum)}
           />
+          
 
           <ChatCreatorForm
             currentUserCookie={cookie}
             closeForm={() => setCreateRoom(false)}
             formOpen={openRoomCreateForm}
             userAdmin={cookie.name}
-            createRoomHandler={(chatName) => createRoomHandler(chatName)}
+            createRoomHandler={(chatProps) => createRoomHandler(chatProps)}
           />
         </div>
       ) : (
@@ -105,12 +102,13 @@ const Chats = ({
   };
   const getChat = (roomNum) => {
     console.log(roomNum);
+    const room = roomNum
     axios
-      .get(`/chats/${roomNum}`)
+      .post(`/chats/${room.roomID}`,room)
       .then(async (res) => {
         if (res.data === true) {
-          setRoomToConnect(roomNum);
-          connectToRoomHandler(roomNum, cookie.name);
+          setRoomToConnect(room.roomID);
+          connectToRoomHandler(room.roomID, cookie.name);
         }
       })
       .catch((err) => {
@@ -123,6 +121,7 @@ const Chats = ({
 
   useEffect(() => {
     renderChatsHandler();
+    console.log(askConnectToRoom);
   }, [cookie]);
 
   return logged();
