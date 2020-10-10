@@ -14,8 +14,8 @@ const ChatRoom = ({
   connected,
 }) => {
   return (
-    <div key={id} className={"roomContainer"}>
-      <div className={"roomStyle"} onClick={() => chatToConnect()}>
+    <div key={id}  className={"roomContainer"} onClick={() => chatToConnect()}>
+      <div className={"roomStyle"} >
         {roomName}-{roomAdmin}
       </div>
     </div>
