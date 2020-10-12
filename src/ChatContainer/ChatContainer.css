@@ -1,6 +1,7 @@
 .ChatContainer{
     margin-left: 32%;
         width: 40%;
+        height: inherit;
         display: flex;
         flex-direction: column;
 }

@@ -1,9 +1,7 @@
 .Chat{
     background-color: #cbdbec;
-    height: inherit;
+    height: 850px;
     
     flex-direction: column;
 }
-.Exit-Chat{
-    display: flex;
-}
+

@@ -9,8 +9,11 @@ const ChatContainer = ({ room, currentUser ,currentUserPhoto }) => {
     <div className="ChatContainer"
       
     >
+      
       <Input_ userPhoto={currentUserPhoto} roomTo={room} currentUser={currentUser} />
+      
     </div>
+    
   );
 };
 

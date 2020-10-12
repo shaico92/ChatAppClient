@@ -69,6 +69,12 @@ const sendMessageViaKeyBoard=e=>{
     return () => socket.removeListener("chat-message");
   });
   useEffect(() => {
+    socket.on('user-disconnected',who=>{setOutput([...output, `${who} has left the chat`]);})
+    return () => {
+      return () => socket.removeListener("user-disconnected");
+    };
+  });
+  useEffect(() => {
     socket.on("user-connected", (name) => {
       setOutput([...output, `${name.name} has joined the chat!`]);
     });
@@ -84,7 +90,7 @@ const sendMessageViaKeyBoard=e=>{
   
 
   return (
-    <div>
+    <div className='Container'>
       <div className="Output">
         <p>You have joined the Chat!</p>
         {output.map((od) => {
@@ -163,7 +169,7 @@ const sendMessageViaKeyBoard=e=>{
           {!isRecording ? "Record" : "Stop Record"}
         </button>
       </div>
-    </div>
+      </div>
   );
 };
 

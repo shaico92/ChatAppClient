@@ -1,0 +1,30 @@
+.Button{
+    
+    /* display: flex; */
+    top: 38%;
+    width: fit-content;
+    left: 11%;
+    padding: 13px;
+    color: cornsilk;
+    background: crimson;
+    border: aquamarine solid 4px;
+    position: absolute;
+    cursor: pointer;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.Button:hover{
+    color: crimson ;
+    background: cornsilk;
+    
+    
+
+}
+.Button:active{
+    color: crimson ;
+    background: cornsilk;
+    box-shadow: 3px 3px 10px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    transform: translateY(4px);
+
+}
+

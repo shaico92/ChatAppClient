@@ -1,6 +1,8 @@
 import React from "react";
 import ChatContainer from "../ChatContainer/ChatContainer";
 import "./Chat.css";
+import Button from '../UI/Button/Button'
+import socket from '../api/api'
 const Chat = ({ room, currentUser, loggedUserPhotoChat, cookie }) => {
   /*
   // TODO:
@@ -11,16 +13,23 @@ const Chat = ({ room, currentUser, loggedUserPhotoChat, cookie }) => {
 
 
 
-  */
+  */  
+
+const disconnectFromChat=(user, room)=>{
+  const whereAndWho = {user: user,room: room}
+  socket.emit('disconnect-user',whereAndWho)
+}
+
   return (
     <div className="Chat">
+      <Button clicked={()=>disconnectFromChat(currentUser,room.roomID)}/>
       <ChatContainer
         currentUserPhoto={loggedUserPhotoChat}
         room={room.roomID}
         currentUser={currentUser}
       />
 
-      <button className={"Exit-Chat"}>exit chat room</button>
+
     </div>
   );
 };
