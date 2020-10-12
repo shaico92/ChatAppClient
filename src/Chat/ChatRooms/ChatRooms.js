@@ -13,7 +13,7 @@ const ChatRooms = ({ rooms, userToLog, isConnecting, roomToConnect }) => {
         roomAdmin={room.roomAdmin}
         roomPort={room.port}
         connected={isConnecting}
-        chatToConnect={() => roomToConnect(room.roomId)}
+        chatToConnect={() => roomToConnect(room)}
       ></ChatRoom>
     ));
 

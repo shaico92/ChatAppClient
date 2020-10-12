@@ -1,7 +1,7 @@
-import React from 'react'
-import ChatContainer from '../ChatContainer/ChatContainer'
-import './Chat.css'
-const Chat = ({ room, currentUser ,loggedUserPhotoChat,cookie}) => {
+import React from "react";
+import ChatContainer from "../ChatContainer/ChatContainer";
+import "./Chat.css";
+const Chat = ({ room, currentUser, loggedUserPhotoChat, cookie }) => {
   /*
   // TODO:
       move the entire home when logged to chat tab
@@ -14,11 +14,13 @@ const Chat = ({ room, currentUser ,loggedUserPhotoChat,cookie}) => {
   */
   return (
     <div className="Chat">
+      <ChatContainer
+        currentUserPhoto={loggedUserPhotoChat}
+        room={room.roomID}
+        currentUser={currentUser}
+      />
 
-
-    <ChatContainer currentUserPhoto={loggedUserPhotoChat}  room= {room} currentUser= { currentUser}/>
-
-    <button className={'Exit-Chat'}>exit chat room</button>
+      <button className={"Exit-Chat"}>exit chat room</button>
     </div>
   );
 };
