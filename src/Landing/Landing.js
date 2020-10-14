@@ -13,8 +13,8 @@ import useCookie from "../api/cookie";
 import Modal from "../UI/Modal/Modal";
 import SideBar from "../SideBar/Sidebar";
 import Logout from "../Authentication/Logout/Logout";
-const Landing = ({}) => {
-  const [pageIndex, setPageIndex] = useState(null);
+const Landing = ({link}) => {
+  const [pageIndex, setPageIndex] = useState(link);
   const [userIn, serUserIn] = useState(null);
 
   const [
@@ -75,15 +75,15 @@ const Landing = ({}) => {
   };
 
   return (
-    <div className={"Landing"}>
-      <Header
-        cookie={cookie}
-        isUserLogged={userIn}
-        changeIndex={(label) => setPageIndex(label)}
-      />
+    !link? <div className={"Landing"}>
+    <Header
+      cookie={cookie}
+      isUserLogged={userIn}
+      changeIndex={(label) => setPageIndex(label)}
+    />
 
-      {renderSwitch(pageIndex)}
-    </div>
+    {renderSwitch(pageIndex)}
+  </div>: <>{renderSwitch(pageIndex)}</>
   );
 };
 

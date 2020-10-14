@@ -20,7 +20,7 @@
     border-radius: 50%;
 }
 
-.Message p{
+.Message div{
     width: fit-content;
     padding: 5px 9px;
     margin: 5px 10px 0;
@@ -34,7 +34,7 @@
     border-bottom-left-radius: 1px;
     
 }
-.Message-notSelf p{
+.Message-notSelf div{
     width: fit-content;
     padding: 5px 9px;
     margin: 5px 10px 0;
@@ -44,6 +44,11 @@
     /* height: 26px; */
     text-align: left;
     word-break: break-all;
-    border-bottom-right-radius: 1px
-    
+    border-bottom-right-radius: 1px;
+    background-color: white;
+}
+
+div p{
+    font-size: 14.2px;
+    color: black;
 }
