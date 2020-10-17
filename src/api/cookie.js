@@ -17,9 +17,10 @@ const useCookie = () => {
     setCookie(user);
   };
   // deleting cookie from browser
-  const deleteCookie = (cookieObj) => {
-    //const   cookieOBJ=    parseCookie(cookieObj);
-    const result = Object.keys(cookieObj).map((key) => [key, cookieObj[key]]);
+  const deleteCookie = () => {
+    const   cookieOBJ=    parseCookie(cookie);
+    
+    const result = Object.keys(cookieOBJ).map((key) => [key, cookieOBJ[key]]);
     result.map((item) => {
       document.cookie = `${item[0]}=${item[1]}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
     });

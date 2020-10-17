@@ -13,7 +13,11 @@ const Input_ = ({ currentUser, userPhoto }) => {
     socket.emit("send-chat-message", smth);
   };
 const inputRef = useRef()
+
 const [finishedMessage,setFinishedMessage]= useState(false)
+const scrollToDown =()=>{
+  document.querySelector('.Output').scrollTop = document.querySelector('.Output').scrollHeight;
+}    
 
   let [audioURL, isRecording, startRecording, stopRecording] = useRecorder();
   const sendAudio = (e) => {
@@ -60,10 +64,15 @@ const sendMessageViaKeyBoard=e=>{
   };
 
   useEffect(() => {
+    scrollToDown()
+  }, [output])
+
+  useEffect(() => {
     socket.on("chat-message", (message) => {
-      console.log(message);
+
       if (message.message.content !== "") {
         setOutput([...output, message]);
+        
       }
     });
     return () => socket.removeListener("chat-message");
@@ -91,7 +100,7 @@ const sendMessageViaKeyBoard=e=>{
 
   return (
     <div className='Container'>
-      <div className="Output">
+      <div  className="Output">
         <div>You have joined the Chat!</div>
         {output.map((od) => {
           if (!od.color && !od.name && !od.message) {
@@ -100,7 +109,7 @@ const sendMessageViaKeyBoard=e=>{
             //displays your audio tag when you send a recording 
           } else if (od.voice) {
             return (
-              <div className="Message">
+              <div  className="Message">
                 <img alt="#"  src={`${APIURL}/public/uploads/${userPhoto}`} className="chat-photo"></img>
                 <div  style={{ backgroundColor: `#${od.color}` }}>{od.name}</div>
                 <audio src={od.voice} controls></audio>;
@@ -109,7 +118,7 @@ const sendMessageViaKeyBoard=e=>{
           } else if (od.message.includes("blob:http://localhost")) {
             //displays your audio tag when another user sent a recording
             return (
-              <div className="Message">
+              <div  className="Message">
                 <img alt="#"  src={`${APIURL}/public/uploads/${userPhoto}`} className="chat-photo"></img>
                 <div  style={{ backgroundColor: `#${od.color}` }}>{od.name}</div>
                 <audio src={od.message} controls></audio>;
@@ -118,7 +127,7 @@ const sendMessageViaKeyBoard=e=>{
           } else if (od.name !== null&&od.name === "You" && od.message !== "") {
             
             return (
-              <div className="Message" >
+              <div  className="Message" >
 
               <img alt="#"  src={`${APIURL}/public/uploads/${userPhoto}`} className="chat-photo"></img>
               <div  style={{ backgroundColor: `#${od.color}` }}>
@@ -127,9 +136,9 @@ const sendMessageViaKeyBoard=e=>{
               </div>
             );
           }else if(od.name !== "You" && od.message !== ""){
-            console.log(userPhoto);
+            
             return (
-              <div className="Message-notSelf" >
+              <div  className="Message-notSelf" >
 
               <img alt="#"  src={`${APIURL}/public/uploads/${od.image}`} className="chat-photo"></img>
               <div  style={{ color: `#${od.color}`,}}>

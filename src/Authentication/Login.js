@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 
-import ChatContainer from "../ChatContainer/ChatContainer";
-import socket from "../api/api";
-import useCookie from "../api/cookie";
+import './Login.css'
+
 import axios from "../api/axios";
+import Landing from '../Landing/Landing'
 import Home from "../Landing/Home/Home";
+import useCookie from '../api/cookie'
 const Login = ({ userIn }) => {
+  
   const [userEmail, setuserEmail] = useState("");
   const [userPhoto, setUserPhoto] = useState("");
-  const [cookie, setCookieInbrowser, deleteCookie] = useCookie();
+  const [cookie, setCookie, parseCookie, setCookieInbrowser, deleteCookie] = useCookie();
   const [userName, setuserName] = useState(null);
   const [userpass, setUserpass] = useState("");
   const [submit, setSubmit] = useState(false);
@@ -39,13 +41,16 @@ const Login = ({ userIn }) => {
             };
             console.log(res.data);
             const result = res.data.answer;
+            setCookieInbrowser(userDet);
             setUserAuthPassed(result);
 
             setuserName(res.data.name);
             console.log(userName);
             setUserPhoto(res.data.image);
 
-            userIn(userDet);
+            //userIn(userDet);
+            
+            
           }
         })
         .catch((err) => {
@@ -58,18 +63,13 @@ const Login = ({ userIn }) => {
   switch (userAuthPassed) {
     case true:
       return (
-        <Home
-          cookie={cookie}
-          loggedUserEmail={userEmail}
-          loggedUserPhoto={userPhoto}
-          loggedUserName={userName}
-          isloggedUser={userAuthPassed}
-        />
+        
+        <Landing withHeader cookie={cookie} link={'chats'} />
       );
 
     default:
       return (
-        <div style={{ marginTop: "30%" }}>
+        <div className="LoginBox">
           <div>
             <div style={{ color: "red" }}>{errorMsg}</div>
             <div>
@@ -93,6 +93,12 @@ const Login = ({ userIn }) => {
                 Login
               </button>
             </div>
+            <div>
+              <button onClick={() => {console.log('take me to sign up');}}>
+                Dont have and account ?
+              </button>
+            </div>
+
           </div>
         </div>
       );

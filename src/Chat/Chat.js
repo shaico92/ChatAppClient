@@ -35,7 +35,7 @@ const disconnectFromChat=(user, room)=>{
 
 
     </div>:
-    <Landing link="chats"/>
+    <Landing cookie={cookie} link="chats"/>
   );
 };
 

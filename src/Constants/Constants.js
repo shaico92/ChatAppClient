@@ -1,36 +1,29 @@
+import User from '../assets/user.svg'
+
 export const Nav = [
-  {
-    label: "home",
-    icon: "home",
-    class: "nav-item",
-    ref: "/",
-  },
+  
 
+  
+  
   {
-    label: "login",
-    icon: "login",
-    class: "nav-item",
-    ref: "/login",
-  },
-  {
-    label: "sign up",
-    icon: "sign_up",
-
-    class: "nav-item",
-    ref: "/signup",
-  },
-  {
-    label: "chats",
+    label: "CHATS",
     icon: "chat",
     hidden: true,
     class: "nav-item",
     ref: "/chat",
   },
   {
-    label: "logout",
+    label: "LOGOUT",
     icon: "logout",
     hidden: true,
     class: "nav-item",
     ref: "/logout",
   },
+  {
+    label: "user",
+    user : User,
+    width: '11px',
+    height: '11px',
+
+  }
 ];

@@ -65,7 +65,7 @@ const Chats = ({
           <div>Welcome {cookie.name} you can now start your own chat</div>
 
           <button onClick={() => setCreateRoom(true)}>
-            Create Your own Chat Room
+            Create new room
           </button>
 
           <ChatRoomsContainer
@@ -94,6 +94,7 @@ const Chats = ({
         </div>
       ) : (
         <Chat
+          cookie = {cookie}
           loggedUserPhotoChat={cookie.image}
           room={roomToConnect}
           currentUser={cookie.name}

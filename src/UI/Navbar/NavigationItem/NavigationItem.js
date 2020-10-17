@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./NavigationItem.css";
-const NavigationItem = ({ ref1, key, classS, label, click, navState }) => {
-  //const [isActive, setActive] = useState("");,click
+import UserMenu from '../UserMenu/UserMenu'
+const NavigationItem = ({ ref1, key, classS, label, click, svg,cookie }) => {
+  const [isActive, setActive] = useState("");
+  const [userSettings,setUserSettings]= useState(false)
+  return  (
 
-  return label === "logout" || label === "chats" ? (
+    !svg ? 
     <NavLink
       exact
       className={` link Fade-In ${classS}`}
@@ -13,18 +16,20 @@ const NavigationItem = ({ ref1, key, classS, label, click, navState }) => {
       key={key}
     >
       {label}
-    </NavLink>
-  ) : (
-    <NavLink
-      exact
-      className={` link  ${classS}`}
-      onClick={() => click()}
-      to={ref1}
-      key={key}
-    >
-      {label}
-    </NavLink>
-  );
+    </NavLink>:
+    userSettings===false ? 
+    <div>
+    <img onClick={()=>setUserSettings(true)}  src={svg} className={'link Fade-In Image'}  alt="user icon"></img>
+    <UserMenu /> 
+    </div>
+    :
+    <div>
+      <img onClick={()=>setUserSettings(false)}  src={svg} className={'link Fade-In Image'}  alt="user icon"></img>
+      <UserMenu open /> 
+    </div>
+
+  
+  ) 
 };
 
 export default NavigationItem;
