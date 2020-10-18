@@ -1,6 +1,7 @@
 import React,{useState} from "react";
 import ChatContainer from "../ChatContainer/ChatContainer";
 import "./Chat.css";
+import LogoutIcon from '../assets/logout.svg'
 import Button from '../UI/Button/Button'
 import socket from '../api/api'
 import Landing from '../Landing/Landing'
@@ -26,7 +27,9 @@ const disconnectFromChat=(user, room)=>{
   return (
     disconnected===false? 
     <div className="Chat">
-      <Button clicked={()=>disconnectFromChat(currentUser,room.roomID)}/>
+      <Button text={'Leave chat room'}  clicked={()=>disconnectFromChat(currentUser,room.roomID)}>
+      <img className="doorBtn" src={LogoutIcon} alt='door image'></img>
+      </Button>
       <ChatContainer
         currentUserPhoto={loggedUserPhotoChat}
         room={room.roomID}

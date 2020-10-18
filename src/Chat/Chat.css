@@ -5,3 +5,8 @@
     flex-direction: column;
 }
 
+.doorBtn{
+    width: 24px;
+
+display: flex;
+}

@@ -1,15 +1,15 @@
 import React from "react";
 import Logout from '../../../Authentication/Logout/Logout'
 import './UserMenu.css'
-const UserMenu = ({open,cookie})=>{
+const UserMenu = ({open,askToLogoutUserMenu})=>{
 
 
 
     return (
         open?
         <div className="UserMenuContent">
-            <Logout />
-            <p>Settings</p>
+            <Logout clicked={askToLogoutUserMenu}/>
+            <div>Settings</div>
         </div>:null
     )
 

@@ -3,10 +3,13 @@
     /* display: flex; */
     top: 38%;
     width: fit-content;
+    
+    display: flex;
     left: 11%;
     padding: 13px;
-    color: cornsilk;
-    background: crimson;
+    color: crimson ;
+    background: cornsilk;
+    
     border: aquamarine solid 4px;
     position: absolute;
     cursor: pointer;
@@ -14,9 +17,9 @@
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 .Button:hover{
-    color: crimson ;
-    background: cornsilk;
     
+    color: cornsilk;
+    background: crimson;
     
 
 }
@@ -26,5 +29,8 @@
     box-shadow: 3px 3px 10px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     transform: translateY(4px);
 
+}
+.Button.content{
+    padding-left: 7px;
 }
 

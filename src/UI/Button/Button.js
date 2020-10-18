@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import './Button.css'
-const Button =({clicked})=>{
+
+const Button =({clicked, children , text})=>{
     const [active,setActive] = useState(null)
      useEffect(()=>{},[active])
     const click=()=>{
@@ -14,7 +15,8 @@ const Button =({clicked})=>{
     return(
         
         <div onClick={()=>click()} className={`Button ${active}`}>
-        exit chat room
+         {children}
+         <div className="content">{text}</div>
       </div>
       
 

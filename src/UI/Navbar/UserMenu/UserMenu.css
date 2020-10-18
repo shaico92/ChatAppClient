@@ -4,7 +4,7 @@
     background-color: #fefefe;
     margin: auto;
     padding: 0;    
-    right: 57px;
+    right: 99px;
     top: 3%;
     border: 1px solid #888;
     width: 10%;
@@ -13,3 +13,14 @@
     
     
   }
+  .UserMenuContent div{
+      text-align: center;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      border-bottom: solid black 2px;
+  }
+
+  .UserMenuContent div:hover{
+    background-color: blue;
+    color: white;
+}

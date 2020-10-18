@@ -13,13 +13,6 @@ export const Nav = [
     ref: "/chat",
   },
   {
-    label: "LOGOUT",
-    icon: "logout",
-    hidden: true,
-    class: "nav-item",
-    ref: "/logout",
-  },
-  {
     label: "user",
     user : User,
     width: '11px',

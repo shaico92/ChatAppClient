@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./NavigationItem.css";
 import UserMenu from '../UserMenu/UserMenu'
-const NavigationItem = ({ ref1, key, classS, label, click, svg,cookie }) => {
-  const [isActive, setActive] = useState("");
+const NavigationItem = ({ ref1, key, classS, label, click, svg,askToLogoutNavbar }) => {
+  
   const [userSettings,setUserSettings]= useState(false)
   return  (
 
@@ -25,7 +25,7 @@ const NavigationItem = ({ ref1, key, classS, label, click, svg,cookie }) => {
     :
     <div>
       <img onClick={()=>setUserSettings(false)}  src={svg} className={'link Fade-In Image'}  alt="user icon"></img>
-      <UserMenu open /> 
+      <UserMenu open askToLogoutUserMenu={askToLogoutNavbar}/> 
     </div>
 
   
