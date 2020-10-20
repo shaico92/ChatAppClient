@@ -12,6 +12,10 @@ const Input_ = ({ currentUser, userPhoto }) => {
     const smth = {image:userPhoto,content:content}
     socket.emit("send-chat-message", smth);
   };
+  const sendAudioMessage= content=>{
+    const obj={image: userPhoto,content: content}
+    socket.emit('send-audio',obj)
+  }
 const inputRef = useRef()
 
 const [finishedMessage,setFinishedMessage]= useState(false)
@@ -38,10 +42,21 @@ const sendMessageViaKeyBoard=e=>{
     sendMessage();
   }
 }
+const typing=e=>{
+  
+  setInputVal(e.target.value);
+    if (e.target.value&&e.target.value!=='') {
+    
+    socket.emit('typing-message',userPhoto);
+    
+  }
+
+}
   const sendAudio1 = (e) => {
-    setOutput([...output, { name: "You", message: e }]);
+    
     sendChatMessage(e);
-    //const url = URL.createObjectURL(file);
+    setOutput([...output, { name: "You", myVoice: e }]);
+    //const url = ;
 
     // setOutput([...output, { name: "You", message: url }]);
     // sendChatMessage(url);
@@ -67,21 +82,34 @@ const sendMessageViaKeyBoard=e=>{
     scrollToDown()
   }, [output])
 
+  useEffect(()=>{
+    socket.on("other-typing", (who) => {
+
+      const content = { name: "someone", whoPhoto: who };
+      //  setOutput([...output, content]);
+        
+      
+    });
+    return () => socket.removeListener("other-typing");
+  })
+
+
   useEffect(() => {
     socket.on("chat-message", (message) => {
-
-      if (message.message.content !== "") {
-        setOutput([...output, message]);
-        
-      }
+      setOutput([...output, message]);
+        console.log(output);
+      
     });
     return () => socket.removeListener("chat-message");
   });
+
+  
+
+
   useEffect(() => {
-    socket.on('user-disconnected',who=>{setOutput([...output, `${who} has left the chat`]);})
-    return () => {
+    socket.on('user-disconnected',who=>{setOutput([...output, `${who} has left the chat`]);});
       return () => socket.removeListener("user-disconnected");
-    };
+    
   });
   useEffect(() => {
     socket.on("user-connected", (name) => {
@@ -94,7 +122,11 @@ const sendMessageViaKeyBoard=e=>{
     inputRef.current.focus()});
 
   useEffect(() => {
-    sendAudio1(audioURL);
+    
+      if (audioURL!=='') {
+        sendAudio1(audioURL);
+      }
+    
   }, [audioURL]);
   
 
@@ -103,25 +135,26 @@ const sendMessageViaKeyBoard=e=>{
       <div  className="Output">
         <div>You have joined the Chat!</div>
         {output.map((od) => {
+          
           if (!od.color && !od.name && !od.message) {
             //case user joined the chat
             return <div >{od}</div>;
             //displays your audio tag when you send a recording 
-          } else if (od.voice) {
+          } else if (od.myVoice) {
             return (
               <div  className="Message">
                 <img alt="#"  src={`${APIURL}/public/uploads/${userPhoto}`} className="chat-photo"></img>
                 <div  style={{ backgroundColor: `#${od.color}` }}>{od.name}</div>
-                <audio src={od.voice} controls></audio>;
+                <audio src={od.myVoice} controls></audio>
               </div>
             );
-          } else if (od.message.includes("blob:http://localhost")) {
+          } else if (od.voice) {
             //displays your audio tag when another user sent a recording
             return (
-              <div  className="Message">
-                <img alt="#"  src={`${APIURL}/public/uploads/${userPhoto}`} className="chat-photo"></img>
+              <div  className="Message-notSelf">
+                <img alt="#"  src={`${APIURL}/public/uploads/${od.image}`} className="chat-photo"></img>
                 <div  style={{ backgroundColor: `#${od.color}` }}>{od.name}</div>
-                <audio src={od.message} controls></audio>;
+                <audio src={od.voice} controls></audio>
               </div>
             );
           } else if (od.name !== null&&od.name === "You" && od.message !== "") {
@@ -155,7 +188,7 @@ const sendMessageViaKeyBoard=e=>{
         onKeyDown={(e)=>sendMessageViaKeyBoard(e)}
           className="Input_line"
           value={inputVal}
-          onChange={(event) => setInputVal(event.target.value)}
+          onChange={(event) => typing(event)}
           type="text"
           placeholder="Please enter message"
         ></input>

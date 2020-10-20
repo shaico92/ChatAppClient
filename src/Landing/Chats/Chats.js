@@ -24,7 +24,7 @@ const Chats = ({
   const [askConnectToRoom, setAskConnectToRoom] = useState(false);
   const connectToRoomHandler = (room, name) => {
     console.log(name);
-    const data = { room: room.roomID, name: name };
+    const data = { room: room.room, name: name };
     socket.emit("new-user", data);
 
     //socket.removeListener("new-user");
